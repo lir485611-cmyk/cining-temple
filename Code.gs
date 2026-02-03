@@ -7,6 +7,10 @@ const PRODUCT_SHEET_ID = '1AxzphT6sT3CYTwFDlhFftfZhLJh_OCfjCmxfF9I918U';
 const MEMBER_SHEET_ID = '1_BseP1u7W5C6ulUkJ1kMPHu7gIJWpRbY-vxCovNunDo';
 const ORDER_SHEET_ID = '1AEBWFkF1yyZe3z6E1qTAkxhpMm04YlexI-PlNoXC0Yg';
 
+// 新增指定的 Sheet IDs
+const LIGHTING_SHEET_ID = '1ji7dhR6UqK1Xatpiu-fRuLEc67NP6gR_0cQvFr1wMac';
+const INQUIRY_SHEET_ID = '1pbB2kXGjWt9PU8kbW0qiNDnkQ4bpIFK45fKjZOgc87A';
+
 /**
  * 密碼雜湊 helper (SHA-256)
  */
@@ -52,6 +56,8 @@ function doPost(e) {
       return loginMember(params);
     } else if (action === 'createOrder') {
       return createOrder(params);
+    } else if (action === 'submitCustomForm') {
+      return handleCustomFormSubmission(params);
     }
     
     return createJsonResponse({ error: '未知的 POST Action: ' + action });
@@ -61,12 +67,45 @@ function doPost(e) {
 }
 
 /**
+ * 處理點燈與問事表單提交
+ */
+function handleCustomFormSubmission(data) {
+  try {
+    const ssId = data.formType === '點燈報名' ? LIGHTING_SHEET_ID : INQUIRY_SHEET_ID;
+    const ss = SpreadsheetApp.openById(ssId);
+    const sheet = ss.getSheets()[0];
+    
+    // 獲取標題行以確定欄位順序
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    
+    const rowData = headers.map(header => {
+      const h = header.toString().trim();
+      // 匹配欄位名稱（這裡假設 Sheet 欄位與資料 key 對應）
+      if (h.includes('時間') || h.toLowerCase().includes('timestamp')) return data.timestamp || new Date().toLocaleString();
+      if (h.includes('姓名')) return data.name || '';
+      if (h.includes('電話')) return data.phone || '';
+      if (h.includes('生日') || h.includes('出生')) return data.birthday || '';
+      if (h.includes('地址')) return data.address || '';
+      if (h.includes('項目')) return data.item || '';
+      if (h.includes('性別')) return data.gender || '';
+      if (h.includes('類別')) return data.category || '';
+      if (h.includes('事由') || h.includes('說明')) return data.reason || '';
+      return '';
+    });
+
+    sheet.appendRow(rowData);
+    return createJsonResponse({ success: true });
+  } catch (e) {
+    return createJsonResponse({ error: '儲存表單失敗', details: e.toString() });
+  }
+}
+
+/**
  * 創建訂單與扣除庫存
  */
 function createOrder(data) {
   const lock = LockService.getScriptLock();
   try {
-    // 嘗試取得鎖定，避免併發下單導致庫存計算錯誤
     lock.waitLock(10000); 
 
     const productSS = SpreadsheetApp.openById(PRODUCT_SHEET_ID);
@@ -78,10 +117,9 @@ function createOrder(data) {
     const stockIdx = productHeaders.indexOf('stock');
     const nameIdx = productHeaders.indexOf('name');
 
-    const cartItems = data.items; // [{product_id, quantity}]
+    const cartItems = data.items;
     const updates = [];
 
-    // 1. 檢查庫存是否充足
     for (const item of cartItems) {
       let found = false;
       for (let i = 1; i < productData.length; i++) {
@@ -98,12 +136,10 @@ function createOrder(data) {
       if (!found) return createJsonResponse({ error: `找不到商品 ID: ${item.product_id}` });
     }
 
-    // 2. 執行庫存扣除
     updates.forEach(upd => {
       productSheet.getRange(upd.row, stockIdx + 1).setValue(upd.newStock);
     });
 
-    // 3. 寫入訂單資訊
     const orderSS = SpreadsheetApp.openById(ORDER_SHEET_ID);
     const orderSheet = orderSS.getSheetByName('訂單資訊') || orderSS.getSheets()[0];
     const orderHeaders = orderSheet.getDataRange().getValues()[0].map(h => h.toString().toLowerCase().trim());
@@ -117,7 +153,7 @@ function createOrder(data) {
         case 'm_id': return data.m_id;
         case 'o_items': return JSON.stringify(data.items);
         case 'o_total': return data.o_total;
-        case 'o_status': return 'Pending'; // 預設待處理
+        case 'o_status': return 'Pending';
         case 'o_shipping_addr': return data.o_shipping_addr;
         case 'o_created_at': return createdAt;
         default: return '';
@@ -125,9 +161,7 @@ function createOrder(data) {
     });
 
     orderSheet.appendRow(newOrderRow);
-
     return createJsonResponse({ success: true, order_id: orderId });
-
   } catch (e) {
     return createJsonResponse({ error: '下單失敗', details: e.toString() });
   } finally {

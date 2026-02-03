@@ -8,78 +8,86 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 統一使用 Noto Serif TC，提供多種字重以利層次排版 -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --temple-red: #8B0000;
-      --temple-gold: #B8860B;
-      --temple-dark: #1A1A1A;
-      --paper-white: #FCF9F2;
-      --temple-blue: #003366;
+      --temple-gold: #D4AF37;
+      --temple-dark: #000000;
+      --temple-glow: #1a0505;
     }
+
     body {
-      font-family: 'Noto Serif TC', serif;
-      background-color: var(--paper-white);
-      background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-      color: var(--temple-dark);
+      font-family: 'Noto Sans TC', sans-serif;
+      background: radial-gradient(circle at center, var(--temple-glow) 0%, var(--temple-dark) 100%);
+      color: #ffffff;
       overflow-x: hidden;
     }
-    
-    /* 統一標題字體 */
-    h1, h2, h3, h4, h5, h6, .serif-bold {
+
+    .serif-title {
       font-family: 'Noto Serif TC', serif;
-      font-weight: 900;
     }
 
-    /* 快捷入口徽章專用迴紋邊框 - 修復圖片顯示與邊框美感 */
-    .badge-pattern-border {
-      border: 4px double var(--temple-blue);
-      box-shadow: 0 0 0 2px white, 0 0 0 4px var(--temple-blue);
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    /* 萬字暗紋紋理 */
+    .manji-pattern {
+      position: relative;
     }
-    .badge-pattern-border:hover {
-      box-shadow: 0 0 0 2px white, 0 0 0 6px var(--temple-gold), 0 20px 50px rgba(0,0,0,0.15);
-      transform: scale(1.08) translateY(-12px);
-    }
-
-    /* 直排文字 - 統一使用 Noto Serif TC 700 */
-    .vertical-text {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-weight: 700;
-      letter-spacing: 0.25em;
+    .manji-pattern::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMjAgMEwyMCA0ME0wIDIwTDQwIDIwTTAgMEw0MCA0ME00MCAwTDAgNDAiIHN0cm9rZT0icmdiYSgyMTIsIDE3NSwgNTUsIDAuMDUpIiBzdHJva2Utd2lkdGg9IjAuNSIvPjwvc3ZnPg==');
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .fade-in {
-      animation: fadeIn 1.2s ease-out forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* 金色文字發光 */
+    .gold-text-glow {
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.4), 0 0 20px rgba(212, 175, 55, 0.2);
     }
 
-    /* 金色邊框裝飾 */
+    /* 橫向捲動 Snap 樣式 */
+    .snap-x-mandatory {
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .snap-center {
+      scroll-snap-align: center;
+    }
+    
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: var(--temple-gold); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .ornament-border {
-      border: 1px solid rgba(184, 134, 11, 0.3);
+      border: 1px solid rgba(212, 175, 55, 0.2);
       position: relative;
     }
     .ornament-border::before {
       content: "";
       position: absolute;
-      top: -2px; left: -2px; width: 15px; height: 15px;
-      border-top: 2px solid var(--temple-red); border-left: 2px solid var(--temple-red);
+      top: -2px; left: -2px; width: 14px; height: 14px;
+      border-top: 2px solid var(--temple-gold); border-left: 2px solid var(--temple-gold);
     }
     .ornament-border::after {
       content: "";
       position: absolute;
-      bottom: -2px; right: -2px; width: 15px; height: 15px;
-      border-bottom: 2px solid var(--temple-red); border-right: 2px solid var(--temple-red);
-    }
-
-    .cloud-pattern {
-      background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
-      position: relative;
+      bottom: -2px; right: -2px; width: 14px; height: 14px;
+      border-bottom: 2px solid var(--temple-gold); border-right: 2px solid var(--temple-gold);
     }
   </style>
 <script type="importmap">
@@ -94,8 +102,20 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-<body class="selection:bg-red-200 selection:text-red-900">
+<body class="selection:bg-red-900 selection:text-white manji-pattern">
   <div id="root"></div>
+  <script>
+    window.addEventListener('scroll', () => {
+      const reveals = document.querySelectorAll('.reveal');
+      reveals.forEach(reveal => {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveal.getBoundingClientRect().top;
+        if (revealTop < windowHeight - 80) {
+          reveal.classList.add('active');
+        }
+      });
+    });
+  </script>
 <script type="module" src="/index.tsx"></script>
 </body>
 </html>
