@@ -12,15 +12,18 @@
   <style>
     :root {
       --temple-red: #8B0000;
-      --temple-gold: #D4AF37;
-      --temple-dark: #000000;
-      --temple-glow: #1a0505;
+      --temple-gold: #C5A009;
+      --temple-bg: #FAF9F6;
+      --temple-paper: #FDFBF7;
+      --temple-text: #3E2723;
+      --temple-text-light: #5D4037;
     }
 
     body {
       font-family: 'Noto Sans TC', sans-serif;
-      background: radial-gradient(circle at center, var(--temple-glow) 0%, var(--temple-dark) 100%);
-      color: #ffffff;
+      background-color: var(--temple-bg);
+      background-image: radial-gradient(circle at center, var(--temple-paper) 0%, var(--temple-bg) 100%);
+      color: var(--temple-text);
       overflow-x: hidden;
     }
 
@@ -28,7 +31,7 @@
       font-family: 'Noto Serif TC', serif;
     }
 
-    /* 萬字暗紋紋理 */
+    /* 萬字暗紋紋理 - 調整為適合淺色背景的淡褐色 */
     .manji-pattern {
       position: relative;
     }
@@ -36,18 +39,17 @@
       content: "";
       position: absolute;
       inset: 0;
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMjAgMEwyMCA0ME0wIDIwTDQwIDIwTTAgMEw0MCA0ME00MCAwTDAgNDAiIHN0cm9rZT0icmdiYSgyMTIsIDE3NSwgNTUsIDAuMDUpIiBzdHJva2Utd2lkdGg9IjAuNSIvPjwvc3ZnPg==');
-      opacity: 0.1;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMjAgMEwyMCA0ME0wIDIwTDQwIDIwTTAgMEw0MCA0ME00MCAwTDAgNDAiIHN0cm9rZT0icmdiYSg2MiwgMzksIDM1LCAwLjAzKSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=');
+      opacity: 0.5;
       pointer-events: none;
       z-index: 1;
     }
 
-    /* 金色文字發光 */
+    /* 文字樣式 */
     .gold-text-glow {
-      text-shadow: 0 0 10px rgba(212, 175, 55, 0.4), 0 0 20px rgba(212, 175, 55, 0.2);
+      text-shadow: 0 0 10px rgba(197, 160, 9, 0.2);
     }
 
-    /* 橫向捲動 Snap 樣式 */
     .snap-x-mandatory {
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
@@ -60,8 +62,8 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
     ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #000; }
-    ::-webkit-scrollbar-thumb { background: var(--temple-gold); }
+    ::-webkit-scrollbar-track { background: var(--temple-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--temple-red); }
 
     .reveal {
       opacity: 0;
@@ -74,20 +76,20 @@
     }
 
     .ornament-border {
-      border: 1px solid rgba(212, 175, 55, 0.2);
+      border: 1px solid rgba(139, 0, 0, 0.1);
       position: relative;
     }
     .ornament-border::before {
       content: "";
       position: absolute;
       top: -2px; left: -2px; width: 14px; height: 14px;
-      border-top: 2px solid var(--temple-gold); border-left: 2px solid var(--temple-gold);
+      border-top: 2px solid var(--temple-red); border-left: 2px solid var(--temple-red);
     }
     .ornament-border::after {
       content: "";
       position: absolute;
       bottom: -2px; right: -2px; width: 14px; height: 14px;
-      border-bottom: 2px solid var(--temple-gold); border-right: 2px solid var(--temple-gold);
+      border-bottom: 2px solid var(--temple-red); border-right: 2px solid var(--temple-red);
     }
   </style>
 <script type="importmap">
