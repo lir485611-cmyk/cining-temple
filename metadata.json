@@ -1,0 +1,8 @@
+
+{
+  "name": "南海慈寧宮 - 線上祈福平台",
+  "description": "秉持菩薩大慈大悲精神，提供線上點燈、法會報名、問事預約與徒步環島登記，讓信眾隨時感受神恩庇佑。",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>南海慈寧宮 | 聖母慈悲 ‧ 萬民安泰</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- 統一使用 Noto Serif TC，提供多種字重以利層次排版 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --temple-red: #8B0000;
+      --temple-gold: #B8860B;
+      --temple-dark: #1A1A1A;
+      --paper-white: #FCF9F2;
+      --temple-blue: #003366;
+    }
+    body {
+      font-family: 'Noto Serif TC', serif;
+      background-color: var(--paper-white);
+      background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+      color: var(--temple-dark);
+      overflow-x: hidden;
+    }
+    
+    /* 統一標題字體 */
+    h1, h2, h3, h4, h5, h6, .serif-bold {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 900;
+    }
+
+    /* 快捷入口徽章專用迴紋邊框 - 修復圖片顯示與邊框美感 */
+    .badge-pattern-border {
+      border: 4px double var(--temple-blue);
+      box-shadow: 0 0 0 2px white, 0 0 0 4px var(--temple-blue);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .badge-pattern-border:hover {
+      box-shadow: 0 0 0 2px white, 0 0 0 6px var(--temple-gold), 0 20px 50px rgba(0,0,0,0.15);
+      transform: scale(1.08) translateY(-12px);
+    }
+
+    /* 直排文字 - 統一使用 Noto Serif TC 700 */
+    .vertical-text {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+    }
+
+    .fade-in {
+      animation: fadeIn 1.2s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 金色邊框裝飾 */
+    .ornament-border {
+      border: 1px solid rgba(184, 134, 11, 0.3);
+      position: relative;
+    }
+    .ornament-border::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px; width: 15px; height: 15px;
+      border-top: 2px solid var(--temple-red); border-left: 2px solid var(--temple-red);
+    }
+    .ornament-border::after {
+      content: "";
+      position: absolute;
+      bottom: -2px; right: -2px; width: 15px; height: 15px;
+      border-bottom: 2px solid var(--temple-red); border-right: 2px solid var(--temple-red);
+    }
+
+    .cloud-pattern {
+      background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+      position: relative;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="selection:bg-red-200 selection:text-red-900">
+  <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
