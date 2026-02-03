@@ -32,22 +32,22 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onUserClick, on
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-500 ${
-        isScrolled || isMobileMenuOpen ? 'bg-black/95 backdrop-blur-md py-3 border-b border-[#D4AF37]/30 shadow-2xl' : 'bg-transparent py-6'
+        isScrolled || isMobileMenuOpen ? 'bg-[#8B0000] py-3 border-b border-[#C5A009]/30 shadow-2xl' : 'bg-transparent py-6'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Mobile Menu Button */}
         <button 
-          className="lg:hidden text-[#D4AF37] p-2"
+          className="lg:hidden text-[#C5A009] p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
         </button>
 
         {/* Desktop Nav - Left */}
-        <nav className="hidden lg:flex items-center space-x-8 text-[12px] font-bold tracking-[0.3em] uppercase text-white">
+        <nav className={`hidden lg:flex items-center space-x-8 text-[12px] font-bold tracking-[0.3em] uppercase transition-colors ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>
           {navLinks.slice(0, 2).map((link) => (
-            <button key={link.name} onClick={link.action} className="hover:text-[#D4AF37] transition-colors">{link.name}</button>
+            <button key={link.name} onClick={link.action} className="hover:text-[#C5A009] transition-colors">{link.name}</button>
           ))}
         </nav>
 
@@ -57,28 +57,28 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onUserClick, on
           className="flex flex-col items-center transition-transform hover:scale-105"
         >
           <div className="flex items-center gap-2">
-            <Landmark className="w-6 h-6 text-[#D4AF37]" />
-            <h1 className="text-xl md:text-2xl font-black tracking-[0.3em] text-white serif-title">南海慈寧宮</h1>
+            <Landmark className={`w-6 h-6 ${isScrolled || isMobileMenuOpen ? 'text-[#C5A009]' : 'text-[#8B0000]'}`} />
+            <h1 className={`text-xl md:text-2xl font-black tracking-[0.3em] serif-title ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>南海慈寧宮</h1>
           </div>
-          <span className="text-[8px] tracking-[0.5em] text-[#D4AF37] opacity-60 uppercase font-bold">Cining Temple</span>
+          <span className={`text-[8px] tracking-[0.5em] opacity-80 uppercase font-bold ${isScrolled || isMobileMenuOpen ? 'text-[#C5A009]' : 'text-[#8B0000]'}`}>Cining Temple</span>
         </button>
 
         {/* Desktop Nav - Right & Icons */}
         <div className="flex items-center space-x-4 md:space-x-8">
-          <nav className="hidden lg:flex items-center space-x-8 text-[12px] font-bold tracking-[0.3em] uppercase text-white">
+          <nav className={`hidden lg:flex items-center space-x-8 text-[12px] font-bold tracking-[0.3em] uppercase transition-colors ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>
             {navLinks.slice(2).map((link) => (
-              <button key={link.name} onClick={link.action} className="hover:text-[#D4AF37] transition-colors">{link.name}</button>
+              <button key={link.name} onClick={link.action} className="hover:text-[#C5A009] transition-colors">{link.name}</button>
             ))}
           </nav>
 
-          <div className="flex items-center space-x-4 text-white">
-            <button onClick={onUserClick} className="hover:text-[#D4AF37] transition-colors">
-              {user ? <UserCheck className="w-5 h-5 text-[#D4AF37]" /> : <User className="w-5 h-5" />}
+          <div className={`flex items-center space-x-4 ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>
+            <button onClick={onUserClick} className="hover:text-[#C5A009] transition-colors">
+              {user ? <UserCheck className="w-5 h-5 text-[#C5A009]" /> : <User className="w-5 h-5" />}
             </button>
             <button onClick={onCartClick} className="relative group">
               <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#8B0000] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border border-[#D4AF37] font-bold">
+                <span className="absolute -top-2 -right-2 bg-[#8B0000] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border border-[#C5A009] font-bold">
                   {cartCount}
                 </span>
               )}
@@ -89,19 +89,19 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onUserClick, on
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-black/95 border-b border-[#D4AF37]/30 fade-in">
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-[#8B0000] border-b border-[#C5A009]/30 fade-in">
           <nav className="flex flex-col p-8 space-y-6 text-center text-[16px] tracking-[0.4em] font-bold text-white uppercase">
             {navLinks.map((link) => (
               <button 
                 key={link.name} 
                 onClick={() => { link.action(); setIsMobileMenuOpen(false); }}
-                className="py-4 border-b border-white/10 active:text-[#D4AF37]"
+                className="py-4 border-b border-white/10 active:text-[#C5A009]"
               >
                 {link.name}
               </button>
             ))}
             {user && (
-              <div className="pt-4 text-[#D4AF37] text-sm">
+              <div className="pt-4 text-[#C5A009] text-sm">
                 歡迎，{user.full_name} 大德
               </div>
             )}

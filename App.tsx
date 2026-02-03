@@ -7,7 +7,7 @@ import { Product, CartItem, Member } from './types';
 import { X, Landmark, HeartHandshake, Compass, Zap, Calendar, ArrowRight, MessageCircle, ChevronLeft, ChevronRight, Flower2, Loader2, CheckCircle2 } from 'lucide-react';
 
 // 請更換為您的 Google Apps Script 部署網址
-const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwh4SWlHVHRFpRERuD19EKjYxkk3ApAUY4nuchLP_XbpSpG7-EG-BkJrg9CC2B_D17p/exec';
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbynh2ohkjEX_XTC0JGqRQDKSLFDcj68Y6nSEuYVAG2Qv9VLU_R7d8Ms_eeoZPFkerJR/exec';
 
 type View = 'Home' | 'ProductDetail' | 'Cart' | 'Login' | 'Account' | 'Checkout' | 'History';
 

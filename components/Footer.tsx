@@ -1,33 +1,76 @@
 
 import React from 'react';
-import { Facebook, Landmark } from 'lucide-react';
+import { Facebook, Landmark, MessageCircle, MapPin, Phone } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const facebookUrl = "https://www.facebook.com/profile.php?id=100088841858344&locale=zh_TW";
+  const lineUrl = "https://lin.ee/ISHPOOV";
+  const address = "高雄市鼓山區民康街216號";
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+  const phoneNumber = "0982243847";
 
   return (
-    <footer className="bg-[#050505] border-t border-[#D4AF37]/20 py-16">
-      <div className="container mx-auto px-6 text-center">
-        <div className="flex flex-col items-center gap-8 mb-12">
-          <div className="flex items-center gap-3">
-            <Landmark className="w-8 h-8 text-[#D4AF37]" />
+    <footer className="bg-[#8B0000] border-t border-[#C5A009]/20 pt-12 pb-8">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col items-center">
+          {/* Logo & Slogan */}
+          <div className="flex items-center gap-3 mb-8">
+            <Landmark className="w-6 h-6 text-[#C5A009]" />
             <h3 className="text-2xl font-black text-white tracking-widest serif-title">南海慈寧宮</h3>
           </div>
           
-          <a 
-            href={facebookUrl} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex items-center gap-3 px-8 py-3 rounded-full border border-white/10 text-gray-400 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all group"
-          >
-            <Facebook className="w-6 h-6 group-hover:scale-110" />
-            <span className="font-bold tracking-widest">官方臉書專頁</span>
-          </a>
+          {/* 精簡後的聯繫資訊橫列 */}
+          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 mb-10 text-white/80">
+            {/* 地址 */}
+            <a 
+              href={googleMapsUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-[#C5A009] transition-colors group"
+            >
+              <MapPin className="w-4 h-4 text-[#C5A009]" />
+              <span className="text-xs font-medium tracking-wider">{address}</span>
+            </a>
+
+            {/* 電話 */}
+            <a 
+              href={`tel:${phoneNumber}`}
+              className="flex items-center gap-2 hover:text-[#C5A009] transition-colors group"
+            >
+              <Phone className="w-4 h-4 text-[#C5A009]" />
+              <span className="text-xs font-medium tracking-wider">{phoneNumber} (袁師姐)</span>
+            </a>
+
+            {/* LINE & FB 社交按鈕 */}
+            <div className="flex items-center gap-6 border-l border-white/20 pl-8 ml-2">
+              <a 
+                href={lineUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-[#C5A009] transition-colors"
+                title="官方 LINE"
+              >
+                <MessageCircle className="w-5 h-5" />
+                <span className="text-xs font-bold hidden sm:inline">LINE</span>
+              </a>
+              <a 
+                href={facebookUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-[#C5A009] transition-colors"
+                title="臉書專頁"
+              >
+                <Facebook className="w-5 h-5" />
+                <span className="text-xs font-bold hidden sm:inline">Facebook</span>
+              </a>
+            </div>
+          </div>
         </div>
 
-        <div className="border-t border-white/5 pt-8">
-          <p className="text-gray-600 text-xs tracking-[0.4em] uppercase font-bold">
-            &copy; 2026 南海慈寧宮 版權所有
+        {/* 版權宣告 */}
+        <div className="border-t border-white/10 pt-6 text-center">
+          <p className="text-white/40 text-[9px] tracking-[0.3em] uppercase font-bold">
+            &copy; 2026 南海慈寧宮 版權所有 ‧ 慈雲普覆 寧境安心
           </p>
         </div>
       </div>
