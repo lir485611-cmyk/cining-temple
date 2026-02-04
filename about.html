@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -62,13 +61,12 @@
       <div class="flex items-center gap-3">
         <h1 class="text-2xl font-black tracking-widest serif-title">南海慈寧宮</h1>
       </div>
-      <a href="index.html" class="text-xs font-bold tracking-[0.3em] uppercase border border-white/30 px-4 py-2 hover:bg-white hover:text-[#8B0000] transition-all">返回首頁</a>
+      <a href="./index.html" class="text-xs font-bold tracking-[0.3em] uppercase border border-white/30 px-4 py-2 hover:bg-white hover:text-[#8B0000] transition-all">返回首頁</a>
     </div>
   </header>
 
   <main class="container mx-auto px-6 py-32 max-w-4xl">
     <div class="space-y-24">
-      <!-- Section 1 -->
       <section class="reveal">
         <div class="flex items-center gap-4 mb-8">
           <div class="w-12 h-[2px] bg-[#8B0000]"></div>
@@ -87,37 +85,29 @@
         </div>
       </section>
 
-      <!-- Section 2 -->
       <section class="reveal">
         <div class="flex items-center gap-4 mb-8 justify-end">
           <h2 class="text-3xl md:text-5xl font-black text-[#8B0000] serif-title tracking-widest">秉志 ‧ 靈感守護</h2>
           <div class="w-12 h-[2px] bg-[#8B0000]"></div>
         </div>
         <div class="bg-white ornament-border p-8 md:p-12 shadow-sm space-y-6 text-right">
-          <p class="text-lg leading-relaxed">
-            「千處祈求千處現，苦海常作渡人舟。」
-          </p>
+          <p class="text-lg leading-relaxed">「千處祈求千處現，苦海常作渡人舟。」</p>
           <p>
             南海慈寧宮秉持聖母慈悲旨意，為眾生提供姻緣、事業、財運與健康之指引。無論是焚香祈福，抑或是線上問事，皆盼能為迷途心靈撥雲見日。我們深信，每一份誠心的祈求，皆能獲得神靈冥冥之中的靈感守護。
           </p>
         </div>
       </section>
 
-      <!-- Section 3 -->
       <section class="reveal">
         <div class="flex items-center gap-4 mb-8">
           <div class="w-12 h-[2px] bg-[#8B0000]"></div>
           <h2 class="text-3xl md:text-5xl font-black text-[#8B0000] serif-title tracking-widest">傳承 ‧ 善緣廣結</h2>
         </div>
         <div class="bg-white ornament-border p-8 md:p-12 shadow-sm space-y-6">
-          <p>
-            歲次乙巳年，南海慈寧宮邁入數位轉型新紀元。透過線上報名與資訊透明化，讓遠方信眾亦能共霑神恩。
-          </p>
-          <p>
-            徒步環島、法會參與、龍柱點燈，每一項活動皆是善緣的匯聚。期許每一位踏入本宮（無論實體或線上）的大德，皆能感受到那份「寧境安心」的守護力。
-          </p>
+          <p>歲次乙巳年，南海慈寧宮邁入數位轉型新紀元。透過線上報名與資訊透明化，讓遠方信眾亦能共霑神恩。</p>
+          <p>徒步環島、法會參與、龍柱點燈，每一項活動皆是善緣的匯聚。期許每一位踏入本宮（無論實體或線上）的大德，皆能感受到那份「寧境安心」的守護力。</p>
           <div class="pt-10 flex justify-center">
-             <a href="index.html" class="bg-[#8B0000] text-white px-12 py-4 text-xl font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-lg">返回首頁 ‧ 感受神恩</a>
+             <a href="./index.html" class="bg-[#8B0000] text-white px-12 py-4 text-xl font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-lg">返回首頁 ‧ 感受神恩</a>
           </div>
         </div>
       </section>
@@ -129,7 +119,6 @@
   </footer>
 
   <script>
-    // 滾動偵測實作
     const handleReveal = () => {
       const reveals = document.querySelectorAll('.reveal');
       reveals.forEach(reveal => {
@@ -140,9 +129,8 @@
         }
       });
     };
-    
     window.addEventListener('scroll', handleReveal);
-    window.addEventListener('load', handleReveal); // 頁面載入時先執行一次
+    window.addEventListener('load', handleReveal);
   </script>
 </body>
 </html>

@@ -3,17 +3,20 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from '././components/Footer';
 import { Product, CartItem, Member } from './types';
-import { X, Landmark, HeartHandshake, Compass, Zap, Calendar, ArrowRight, MessageCircle, ChevronLeft, ChevronRight, Flower2, Loader2, CheckCircle2 } from 'lucide-react';
+import { X, Landmark, MapPin, Clock, Calendar, MessageCircle, ChevronLeft, ChevronRight, Flower2, Loader2, CheckCircle2, Facebook, Phone, Info, Map as MapIcon, Maximize2 } from 'lucide-react';
 
 // 請更換為您的 Google Apps Script 部署網址
-const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxbsnqrwjCF3Cky5l0QRp1mb3mA1NiwSBtG2fmWNCxBXQp9tR8j_SSbTWcNYaJkhlyE/exec';
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyVJF82yjSctgUZKm0Hu-nvQ1RgTqbejT1uHXL95OlMj-Cj7CtFjyDMZbDFZb469J6J/exec';
 
-type View = 'Home' | 'ProductDetail' | 'Cart' | 'Login' | 'Account' | 'Checkout' | 'History';
+type View = 'Home' | 'About' | 'Gods' | 'Pilgrimage';
 
 export const getDriveImageUrl = (id: string) => {
   if (!id) return '';
   return `https://lh3.googleusercontent.com/d/${id}`;
 };
+
+// 徒步路線圖 ID
+const ROUTE_MAP_ID = '1ZS5SILdpJXxlNxpCXpLk963SBGuv_1sn';
 
 const LATEST_NEWS = [
   {
@@ -21,201 +24,127 @@ const LATEST_NEWS = [
     title: '龍柱祈福燈',
     desc: '燃燈供佛，龍天護佑。截止日期：115/2/20 (國曆)。',
     deadline: '115/2/20',
-    action: 'LINE 線上報名',
-    link: 'https://lin.ee/22Yqo9fe',
-    isExternal: true,
+    actions: [
+      { label: 'LINE 線上報名', link: 'https://lin.ee/22Yqo9fe', type: 'primary', icon: 'message' }
+    ],
     status: 'Active'
   },
   {
     id: 'news2',
     title: '丙午年徒步環島',
-    desc: '第三次徒步環島，一步一腳印，皆是懺悔，也是祈禱。',
-    deadline: '法緣將啟',
-    action: 'LINE 線上報名',
-    link: 'https://lin.ee/22Yqo9fe',
-    isExternal: true,
+    desc: '第三次徒步環島，一步一腳印，皆是懺悔，也是祈禱。一步一步朝向聖母的懷抱。',
+    deadline: '', 
+    actions: [
+      { label: 'LINE 線上報名', link: 'https://lin.ee/22Yqo9fe', type: 'primary', icon: 'message' },
+      { label: '徒步路線', link: '#', type: 'secondary', icon: 'map', isMapTrigger: true }
+    ],
     status: 'Active'
   }
 ];
 
-const SERVICE_MATRIX = [
-  { 
-    id: 1, 
-    title: '點燈祈福', 
-    tagline: '燃一盞心燈，照亮本命元辰。',
-    desc: '於佛前續明燈，驅散生命陰霾，祈願前程如錦、歲月平安順遂。',
-    imgId: '1gpME6-MqIAWRp7z9Oy95vLUyGdtWiIt6',
-    actionType: 'modal',
-    actionValue: 'lighting'
-  },
-  { 
-    id: 2, 
-    title: '線上問事', 
-    tagline: '慈悲垂示，指引迷途心靈。',
-    desc: '在紛擾世間尋求一方清淨，由神靈慈悲指點迷津，化解心中結縛，找回平靜。',
-    imgId: '1WtFQQT2Mq3jX-Iq7I65P046EbE1N0g1C',
-    actionType: 'modal',
-    actionValue: 'inquiry'
-  },
-  { 
-    id: 3, 
-    title: '法會資訊', 
-    tagline: '法水遍灑，功德圓滿霑法喜。',
-    desc: '匯聚眾人願力，消災除障、增益吉祥，令眾生共霑神恩，成就圓滿福慧。',
-    imgId: '1rcm_LaIAMYbZFEhHu4L9gTRtfvB4B64B',
-    actionType: 'scroll',
-    actionValue: 'news-section'
-  },
+const WORSHIP_STEPS = [
+  { id: 1, name: '天公爐', effect: '敬告上蒼', desc: '手持一炷香，向外對天參拜，稟告姓名與祈願。' },
+  { id: 2, name: '金元寶', effect: '財源入庫', desc: '敬獻一炷香，祈請招財進寶，守護事業與財氣。' },
+  { id: 3, name: '主爐', effect: '聖母、菩薩、武財神', desc: '敬獻一炷香，祈求三尊神明慈雲普覆，賜予智慧、財利與寧境安心。' },
+  { id: 4, name: '虎爺大將軍', effect: '鎮守財庫', desc: '敬獻一炷香，祈請虎爺公驅邪避小人，守穩財源。' },
+  { id: 5, name: '五營', effect: '出入平安', desc: '敬獻一炷香，感念五營神將守護地方，保佑事事平安。' }
 ];
 
 const DIVINE_STATUES = [
   {
-    name: '千手觀音',
-    imgId: '1VVFGy1FdpVHWK-nG45D7dGcttBZbXgCG',
-    quote: '「慈悲廣大，感應如響」',
-    description: '具足千手千眼，觀照世間苦難。千處祈求千處現，為苦海中渡人的慈航。'
-  },
-  {
     name: '天上聖母',
     imgId: '1eCe_3ffYdKIe1-eEXEQdnL9ojsUqOQeo',
     quote: '「聖母慈光，護國佑民」',
-    description: '湄洲天后聖尊，威靈顯赫。為萬民心靈的避風港，護佑航行者與信眾平安。'
+    description: '湄洲天后聖尊，威靈顯赫。為萬民心靈的避風港。'
   },
   {
-    name: '虎爺公',
+    name: '千手觀音',
+    imgId: '1VVFGy1FdpVHWK-nG45D7dGcttBZbXgCG',
+    quote: '「慈悲廣大，感應如響」',
+    description: '具足千手千眼，觀照世間苦難。千處祈求千處現。'
+  },
+  {
+    name: '武財神',
     imgId: '1-8qfVQXgkSNi__jJFddNPEtWinNaGgAP',
-    quote: '「虎威震懾，財源廣進」',
-    description: '鎮守宮殿的金虎將軍，驅邪除煞、守護兒童。更是民間信奉的財神化身。'
+    quote: '「五路招財，事業亨通」',
+    description: '威震八方，主掌天下財源，祈請事業順利、財祿豐收。'
   }
 ];
 
-const LIGHTING_OPTIONS = ["光明燈", "太歲燈", "文昌燈", "財神燈", "龍柱祈福燈"];
-const INQUIRY_CATEGORIES = ["姻緣", "事業", "工作", "財運", "健康"];
-
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('Home');
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [modalType, setModalType] = useState<'none' | 'lighting' | 'inquiry'>('none');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  
-  const [currentStatueIndex, setCurrentStatueIndex] = useState(0);
-
-  const newsRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const cartCount = 0;
-
-  const handleServiceClick = (type: string, value: string) => {
-    if (type === 'scroll') {
-      newsRef.current?.scrollIntoView({ behavior: 'smooth' });
-    } else if (type === 'modal') {
-      setModalType(value as any);
-      setSubmitSuccess(false);
-    }
-  };
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    const formData = new FormData(e.currentTarget);
-    const data: Record<string, any> = {};
-    formData.forEach((value, key) => data[key] = value);
-    
-    data.action = 'submitCustomForm';
-    data.formType = modalType === 'lighting' ? '點燈報名' : '線上問事';
-    data.timestamp = new Date().toLocaleString();
-
-    try {
-      // POST 到 GAS (no-cors 處理)
-      await fetch(GAS_WEB_APP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      
-      setTimeout(() => {
-        setSubmitSuccess(true);
-        setIsSubmitting(false);
-      }, 1000);
-    } catch (error) {
-      console.error('Submit error:', error);
-      alert('傳送失敗，請直接聯繫官方 LINE');
-      setIsSubmitting(false);
-    }
-  };
-
-  const nextStatue = () => {
-    setCurrentStatueIndex((prev) => (prev + 1) % DIVINE_STATUES.length);
-  };
-
-  const prevStatue = () => {
-    setCurrentStatueIndex((prev) => (prev - 1 + DIVINE_STATUES.length) % DIVINE_STATUES.length);
-  };
+  const [isMapOpen, setIsMapOpen] = useState(false);
+  const [activeStatueIndex, setActiveStatueIndex] = useState(0);
+  const statueScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const itemWidth = container.offsetWidth;
-      container.scrollTo({
-        left: currentStatueIndex * itemWidth,
-        behavior: 'smooth'
-      });
-    }
-  }, [currentStatueIndex]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentView]);
 
-  // Fix: Made children optional in the SectionTitle prop definition to satisfy the TypeScript compiler's requirements for JSX elements.
+  const handleStatueScroll = () => {
+    if (!statueScrollRef.current) return;
+    const { scrollLeft, clientWidth } = statueScrollRef.current;
+    const index = Math.round(scrollLeft / clientWidth);
+    if (index !== activeStatueIndex) {
+      setActiveStatueIndex(index);
+    }
+  };
+
   const SectionTitle = ({ children, className = "" }: { children?: React.ReactNode, className?: string }) => (
-    <div className={`flex items-center justify-center gap-6 mb-16 reveal ${className}`}>
+    <div className={`flex items-center justify-center gap-6 mb-16 ${className}`}>
       <Flower2 className="w-6 h-6 text-[#8B0000] opacity-60" />
-      <h2 className="text-3xl md:text-6xl font-black text-[#8B0000] tracking-widest serif-title drop-shadow-sm">{children}</h2>
+      <h2 className="text-3xl md:text-5xl font-black text-[#8B0000] tracking-widest serif-title drop-shadow-sm">{children}</h2>
       <Flower2 className="w-6 h-6 text-[#8B0000] opacity-60" />
     </div>
   );
 
   return (
-    <div className="min-h-screen text-[#3E2723] overflow-x-hidden">
+    <div className={`min-h-screen text-[#3E2723] overflow-x-hidden ${['Gods', 'Pilgrimage'].includes(currentView) ? 'bg-white' : ''}`}>
       <Header 
-        cartCount={cartCount} 
-        onCartClick={() => setIsCartOpen(true)}
-        onUserClick={() => {}}
-        onHomeClick={() => { setCurrentView('Home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-        onIntroClick={() => { window.location.href = 'about.html'; }}
-        user={null}
+        onHomeClick={() => setCurrentView('Home')}
+        onIntroClick={() => setCurrentView('About')}
+        onGodsClick={() => setCurrentView('Gods')}
+        onPilgrimageClick={() => setCurrentView('Pilgrimage')}
       />
 
       <main>
         {currentView === 'Home' && (
           <div className="fade-in">
             <Hero />
-
-            {/* 最新消息與活動 */}
-            <section ref={newsRef} className="relative -mt-16 md:-mt-24 z-30 px-4">
+            
+            <section className="relative z-40 px-4 pt-24 md:pt-40 bg-transparent">
               <div className="container mx-auto max-w-6xl">
-                <SectionTitle className="mb-10 text-[#3E2723]">最新消息</SectionTitle>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                <SectionTitle className="mb-12">最新消息</SectionTitle>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                   {LATEST_NEWS.map((news) => (
-                    <div key={news.id} className="bg-white ornament-border p-8 md:p-10 shadow-xl reveal active border-l-4 border-[#8B0000] flex flex-col group hover:shadow-2xl transition-all duration-500">
+                    <div key={news.id} className="bg-white ornament-border p-8 md:p-12 shadow-xl border-l-4 border-[#8B0000] flex flex-col group hover:shadow-2xl transition-all duration-500">
                       <div className="flex justify-between items-start mb-6">
-                        <span className={`px-4 py-1.5 text-[10px] font-black tracking-widest uppercase ${news.status === 'Active' ? 'bg-[#8B0000] text-white shadow-md' : 'bg-gray-200 text-gray-500'}`}>
-                          {news.status === 'Active' ? '最新活動' : '即將報名'}
-                        </span>
+                        <span className="px-4 py-1.5 text-[10px] font-black tracking-widest uppercase bg-[#8B0000] text-white shadow-md">最新活動</span>
                         <Calendar className="w-5 h-5 text-[#C5A009]" />
                       </div>
-                      <h4 className="text-xl md:text-2xl font-black mb-3 serif-title text-[#8B0000] group-hover:text-[#C5A009] transition-colors">{news.title}</h4>
-                      <p className="text-[#5D4037] mb-6 font-light leading-relaxed">{news.desc}</p>
-                      <div className="flex flex-col sm:flex-row justify-between items-center gap-6 mt-auto">
-                        <span className="text-xs text-[#8B0000] font-bold tracking-widest uppercase">截止：{news.deadline}</span>
-                        <a 
-                          href={news.link} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="w-full sm:w-auto bg-[#8B0000] text-white px-8 py-3 text-sm font-black tracking-widest flex items-center justify-center gap-2 hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-md"
-                        >
-                          <MessageCircle className="w-4 h-4" /> {news.action}
-                        </a>
+                      <h4 className="text-xl md:text-2xl font-black mb-4 serif-title text-[#8B0000] group-hover:text-[#C5A009] transition-colors">{news.title}</h4>
+                      <p className="text-[#5D4037] mb-8 font-light leading-relaxed">{news.desc}</p>
+                      
+                      <div className="flex flex-col gap-6 mt-auto">
+                        {news.deadline && (
+                          <span className="text-xs text-[#8B0000] font-bold tracking-widest uppercase">截止：{news.deadline}</span>
+                        )}
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          {news.actions.map((act, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => act.isMapTrigger ? setIsMapOpen(true) : window.open(act.link, '_blank')}
+                              className={`flex-1 px-6 py-3 text-sm font-black tracking-widest flex items-center justify-center gap-2 transition-all shadow-md ${
+                                act.type === 'primary' 
+                                ? 'bg-[#8B0000] text-white border border-[#C5A009] hover:bg-[#C5A009]' 
+                                : 'bg-transparent text-[#8B0000] border-2 border-[#8B0000]/20 hover:border-[#8B0000] hover:bg-[#8B0000]/5'
+                              }`}
+                            >
+                              {act.icon === 'message' ? <MessageCircle className="w-4 h-4" /> : <MapIcon className="w-4 h-4" />}
+                              {act.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -223,182 +152,225 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 核心服務矩陣 */}
-            <section className="py-24 md:py-32">
-              <div className="container mx-auto px-4 md:px-6">
-                <SectionTitle>服務矩陣</SectionTitle>
-
-                <div className="grid grid-cols-3 md:grid-cols-3 gap-2 md:gap-16 justify-center">
-                  {SERVICE_MATRIX.map((item) => (
-                    <div 
-                      key={item.id} 
-                      onClick={() => handleServiceClick(item.actionType, item.actionValue)}
-                      className="flex flex-col items-center text-center reveal group cursor-pointer"
-                    >
-                      <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-56 md:h-56 rounded-full border border-[#8B0000]/10 flex items-center justify-center mb-4 md:mb-10 bg-white shadow-sm group-hover:shadow-2xl group-hover:border-[#C5A009]/30 transition-all duration-700 overflow-hidden ornament-border">
-                        <img 
-                          src={getDriveImageUrl(item.imgId)} 
-                          className="w-[60%] h-[60%] object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
-                          alt={item.title} 
-                        />
-                      </div>
-                      <h3 className="text-[10px] sm:text-sm md:text-2xl font-black text-[#3E2723] serif-title tracking-widest uppercase group-hover:text-[#8B0000] transition-colors">{item.title}</h3>
-                      <div className="hidden md:block mt-4">
-                        <p className="text-[#8B0000] font-bold tracking-widest mb-3 text-sm">{item.tagline}</p>
-                        <p className="text-[#5D4037] leading-relaxed font-light text-sm max-w-[200px] mx-auto">{item.desc}</p>
-                      </div>
+            {/* 修復後的聖像莊嚴輪播區塊 */}
+            <section className="py-24 md:py-40 bg-white mt-32 overflow-hidden">
+               <div className="container mx-auto">
+                 {/* 標題塊修復：紅底白字 (#B22222) */}
+                 <div className="flex justify-center mb-24">
+                    <div className="bg-[#B22222] text-white px-12 py-5 font-black tracking-[0.4em] serif-title text-3xl md:text-5xl shadow-[6px_6px_0px_#C5A009] relative z-10">
+                      聖像莊嚴
                     </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-            
-            {/* 聖像莊嚴 */}
-            <section className="py-24 md:py-32 border-y border-[#8B0000]/10 relative bg-[#FDFBF7]/30">
-               <div className="container mx-auto px-6 relative">
-                 <SectionTitle>聖像莊嚴</SectionTitle>
-
-                 <div className="flex md:hidden absolute top-1/2 -translate-y-1/2 left-2 right-2 justify-between z-40 pointer-events-none">
-                    <button onClick={prevStatue} className="w-10 h-10 rounded-full bg-white/90 border border-[#8B0000]/20 flex items-center justify-center text-[#8B0000] pointer-events-auto shadow-md" aria-label="上一個"><ChevronLeft className="w-6 h-6" /></button>
-                    <button onClick={nextStatue} className="w-10 h-10 rounded-full bg-white/90 border border-[#8B0000]/20 flex items-center justify-center text-[#8B0000] pointer-events-auto shadow-md" aria-label="下一個"><ChevronRight className="w-6 h-6" /></button>
                  </div>
 
-                 <div ref={scrollContainerRef} className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-8 pb-12 px-4 md:grid md:grid-cols-3 md:px-0">
-                    {DIVINE_STATUES.map((statue, idx) => (
-                      <div key={idx} className="flex-shrink-0 w-full md:w-full snap-center group reveal">
-                         <div className="relative aspect-[3/4] overflow-hidden ornament-border bg-white flex items-center justify-center p-8 shadow-sm group-hover:shadow-2xl transition-all duration-1000">
-                            <img src={getDriveImageUrl(statue.imgId)} className="max-w-full max-h-full object-contain transition-transform duration-1000 group-hover:scale-110" alt={statue.name}/>
-                            <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent flex items-end justify-center p-10">
-                               <h3 className="text-2xl md:text-4xl font-black text-[#8B0000] tracking-[0.3em] serif-title">{statue.name}</h3>
+                 <div className="relative">
+                    {/* 滑動容器：確保在 index.html 不會展開跑板 */}
+                    <div 
+                      ref={statueScrollRef}
+                      onScroll={handleStatueScroll}
+                      className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-8 md:gap-16 px-6 md:px-[25%] pb-12"
+                    >
+                       {DIVINE_STATUES.map((statue, idx) => (
+                         <div key={idx} className="flex-shrink-0 w-full md:w-[600px] snap-center">
+                            <div className="group">
+                               <div className="relative aspect-[3/4] overflow-hidden ornament-border bg-[#FDFBF7] flex items-center justify-center p-8 md:p-12 shadow-sm group-hover:shadow-2xl transition-all duration-1000">
+                                  <img 
+                                    src={getDriveImageUrl(statue.imgId)} 
+                                    className="max-w-full max-h-full object-contain transition-transform duration-1000 group-hover:scale-105" 
+                                    alt={statue.name}
+                                  />
+                               </div>
+                               <div className="mt-12 text-center px-4">
+                                  <h3 className="text-3xl font-black text-[#B22222] serif-title mb-4 tracking-widest">{statue.name}</h3>
+                                  <p className="text-[#C5A009] leading-relaxed italic font-bold text-xl mb-4">{statue.quote}</p>
+                                  <p className="text-[#5D4037] text-base leading-loose font-light max-w-lg mx-auto">{statue.description}</p>
+                               </div>
                             </div>
                          </div>
-                         <div className="mt-8 text-center px-4">
-                            <p className="text-[#C5A009] leading-relaxed italic font-bold text-lg mb-3 drop-shadow-sm">{statue.quote}</p>
-                            <p className="text-[#5D4037] text-sm leading-loose font-light">{statue.description}</p>
-                         </div>
-                      </div>
-                    ))}
-                 </div>
-                 
-                 <div className="flex md:hidden justify-center gap-3 mt-4">
-                    {DIVINE_STATUES.map((_, idx) => (
-                      <div key={idx} className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentStatueIndex ? 'bg-[#8B0000] w-6 shadow-sm' : 'bg-gray-300'}`}/>
-                    ))}
+                       ))}
+                    </div>
+
+                    {/* 紅色圓點指示器 */}
+                    <div className="flex justify-center items-center gap-4 mt-8">
+                       {DIVINE_STATUES.map((_, idx) => (
+                         <button 
+                           key={idx}
+                           onClick={() => {
+                             statueScrollRef.current?.scrollTo({ 
+                               left: idx * statueScrollRef.current.clientWidth, 
+                               behavior: 'smooth' 
+                             });
+                           }}
+                           className={`transition-all duration-500 rounded-full h-2.5 ${
+                             activeStatueIndex === idx 
+                             ? 'w-10 bg-[#B22222]' 
+                             : 'w-2.5 bg-gray-200 hover:bg-[#B22222]/30'
+                           }`}
+                         />
+                       ))}
+                    </div>
                  </div>
                </div>
             </section>
+          </div>
+        )}
 
-            <Footer />
+        {currentView === 'About' && (
+          <div className="fade-in container mx-auto px-6 py-40 max-w-4xl space-y-24">
+             <SectionTitle>宮廟沿革</SectionTitle>
+             <section className="bg-white ornament-border p-8 md:p-12 shadow-sm space-y-6">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-[2px] bg-[#8B0000]"></div>
+                  <h2 className="text-2xl md:text-3xl font-black text-[#8B0000] serif-title tracking-widest">緣起 ‧ 慈航普渡</h2>
+                </div>
+                <p className="text-lg leading-relaxed text-[#3E2723]">
+                  南海慈寧宮座落於山水匯聚之福地，主祀<span className="font-bold text-[#8B0000]">千手千眼觀世音菩薩</span>與<span className="font-bold text-[#8B0000]">天上聖母</span>。
+                </p>
+                <p className="text-[#5D4037]">
+                  菩薩以千眼觀照世間苦厄，聖母以慈心護佑萬民平安。自建宮以來，無數信眾於此尋求心靈寄託。本宮殿宇雖非金碧輝煌，卻承載著佛道圓融之精神，為紛擾城市中一處清淨之地。
+                </p>
+             </section>
+             <div className="text-center mt-20">
+                <button onClick={() => setCurrentView('Home')} className="bg-[#8B0000] text-white px-12 py-4 text-xl font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-lg">返回首頁</button>
+             </div>
+          </div>
+        )}
+
+        {currentView === 'Gods' && (
+          <div className="fade-in bg-white py-40">
+             <div className="container mx-auto px-6 max-w-5xl">
+                <SectionTitle>祀奉神尊</SectionTitle>
+                <div className="space-y-32">
+                   <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                      <div className="order-2 md:order-1">
+                        <div className="bg-[#B22222] text-white px-8 py-2 inline-block font-black tracking-widest serif-title text-xl mb-6 shadow-[3px_3px_0px_#C5A009]">天上聖母</div>
+                        <h3 className="text-2xl font-black text-[#B22222] mb-6 tracking-widest">慈航普渡 ‧ 鎮殿主神</h3>
+                        <p className="text-[#333333] leading-relaxed text-lg text-justify font-light">天上聖母（媽祖）為南海慈寧宮之主神，以慈悲大愛護佑眾生。無論祈求家內平安、消災解厄，皆感應如響，是信眾心靈最堅實的依靠。</p>
+                      </div>
+                      <div className="order-1 md:order-2 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
+                         <img src={getDriveImageUrl('1eCe_3ffYdKIe1-eEXEQdnL9ojsUqOQeo')} className="max-h-full object-contain" alt="天上聖母"/>
+                      </div>
+                   </section>
+                   <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                      <div className="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
+                         <img src={getDriveImageUrl('1VVFGy1FdpVHWK-nG45D7dGcttBZbXgCG')} className="max-h-full object-contain" alt="觀世音菩薩"/>
+                      </div>
+                      <div>
+                        <div className="bg-[#B22222] text-white px-8 py-2 inline-block font-black tracking-widest serif-title text-xl mb-6 shadow-[3px_3px_0px_#C5A009]">觀世音菩薩</div>
+                        <h3 className="text-2xl font-black text-[#B22222] mb-6 tracking-widest">慈悲示現 ‧ 靈感守護</h3>
+                        <p className="text-[#333333] leading-relaxed text-lg text-justify font-light">菩薩具足大威神力，普門示現度一切苦。引領迷途心靈找回正向力量，令信眾皆能「慈雲普覆、寧境安心」。</p>
+                      </div>
+                   </section>
+                </div>
+                <div className="mt-40 text-center">
+                  <button onClick={() => setCurrentView('Home')} className="border-2 border-[#B22222] text-[#B22222] px-12 py-4 font-black tracking-[0.4em] hover:bg-[#B22222] hover:text-white transition-all">返回首頁</button>
+                </div>
+             </div>
+          </div>
+        )}
+
+        {currentView === 'Pilgrimage' && (
+          <div className="fade-in bg-white py-40">
+             <div className="container mx-auto px-6 max-w-5xl">
+                <div className="text-center mb-24">
+                  <h2 className="text-4xl md:text-6xl font-black text-[#8B0000] serif-title tracking-[0.4em] mb-6">朝聖資訊</h2>
+                  <div className="w-20 h-1 bg-[#C5A009] mx-auto"></div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+                  <div className="bg-[#FDFBF7] p-10 border border-gray-100 shadow-sm flex items-center gap-8 ornament-border">
+                    <Clock className="w-12 h-12 text-[#8B0000]" />
+                    <div>
+                      <h4 className="text-xs font-black tracking-widest text-gray-400 mb-2 uppercase">開放參拜時間</h4>
+                      <p className="text-2xl font-black serif-title text-[#3E2723]">每日 9:00 - 18:00</p>
+                    </div>
+                  </div>
+                  <div className="bg-[#FDFBF7] p-10 border border-gray-100 shadow-sm flex items-center gap-8 ornament-border">
+                    <MapPin className="w-12 h-12 text-[#8B0000]" />
+                    <div>
+                      <h4 className="text-xs font-black tracking-widest text-gray-400 mb-2 uppercase">宮廟地址</h4>
+                      <p className="text-xl font-black serif-title text-[#3E2723]">高雄鼓山區民康街216號</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-32">
+                  <div className="flex items-center gap-4 mb-12">
+                    <div className="w-8 h-[2px] bg-[#8B0000]"></div>
+                    <h3 className="text-2xl font-black text-[#8B0000] serif-title tracking-widest">參拜流程 ‧ 五步感應</h3>
+                  </div>
+                  <div className="grid grid-cols-1 gap-8">
+                    {WORSHIP_STEPS.map((step) => (
+                      <div key={step.id} className="flex flex-col md:flex-row gap-8 p-8 bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative">
+                        <div className="w-16 h-16 bg-[#8B0000] text-white flex items-center justify-center text-3xl font-black serif-title flex-shrink-0 group-hover:bg-[#C5A009] transition-colors shadow-[4px_4px_0px_#C5A009]">
+                          {step.id}
+                        </div>
+                        <div>
+                          <div className="flex flex-wrap items-center gap-4 mb-4">
+                            <h4 className="text-2xl font-black text-[#8B0000] serif-title tracking-widest">【{step.name}】</h4>
+                            <span className="px-4 py-1 bg-[#C5A009] text-white text-xs font-bold tracking-widest uppercase shadow-sm">
+                              {step.effect}
+                            </span>
+                          </div>
+                          <p className="text-[#5D4037] leading-relaxed text-lg font-light">{step.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-[#8B0000] p-12 md:p-24 text-white text-center ornament-border relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none manji-pattern"></div>
+                  <h3 className="text-2xl md:text-4xl font-black serif-title tracking-[0.3em] mb-12 relative z-10">聯繫慈寧 ‧ 廣結善緣</h3>
+                  <div className="flex flex-col md:flex-row justify-center gap-8 relative z-10">
+                    <a href="https://lin.ee/22Yqo9fe" target="_blank" rel="noopener noreferrer" className="bg-white text-[#8B0000] px-12 py-5 font-black tracking-widest flex items-center justify-center gap-4 hover:bg-[#C5A009] hover:text-white transition-all shadow-xl text-lg">
+                      <MessageCircle className="w-7 h-7" /> 官方 LINE
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=100088841858344" target="_blank" rel="noopener noreferrer" className="bg-transparent border-2 border-white text-white px-12 py-5 font-black tracking-widest flex items-center justify-center gap-4 hover:bg-white hover:text-[#8B0000] transition-all text-lg">
+                      <Facebook className="w-7 h-7" /> 臉書專頁
+                    </a>
+                  </div>
+                </div>
+
+                <div className="mt-24 text-center">
+                   <button onClick={() => setCurrentView('Home')} className="text-[#8B0000] font-black tracking-widest hover:text-[#C5A009] transition-colors border-b-2 border-[#8B0000]/20 pb-2">返回首頁</button>
+                </div>
+             </div>
           </div>
         )}
       </main>
 
-      {/* 表單彈窗 Modal */}
-      {modalType !== 'none' && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6 overflow-y-auto animate-in fade-in duration-300">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setModalType('none')}></div>
-          <div className="relative w-full max-w-2xl bg-[#FAF9F6] ornament-border p-8 md:p-12 shadow-2xl my-auto text-[#3E2723] animate-in zoom-in-95 duration-300">
-             <button onClick={() => setModalType('none')} className="absolute top-6 right-6 text-[#5D4037] hover:text-[#8B0000] transition-colors z-10 p-2"><X className="w-8 h-8" /></button>
+      {/* 徒步路線燈箱：採用 Iframe 模式以支援翻閱多頁檔案 */}
+      {isMapOpen && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/90 p-4 md:p-12 animate-in fade-in duration-300 backdrop-blur-md">
+          <button 
+            onClick={() => setIsMapOpen(false)} 
+            className="absolute top-6 right-6 text-white/60 hover:text-white transition-all z-[310] p-3 bg-white/10 rounded-full hover:bg-white/20"
+          >
+            <X className="w-10 h-10" />
+          </button>
+          
+          <div className="w-full h-full max-w-5xl bg-white shadow-2xl rounded-lg overflow-hidden flex flex-col relative">
+             <div className="bg-[#8B0000] text-white px-8 py-4 flex justify-between items-center">
+                <span className="font-black tracking-widest serif-title">丙午年徒步環島 ‧ 路線手冊</span>
+                <span className="text-xs opacity-60 tracking-widest hidden md:block">南海慈寧宮 ‧ 慈雲普覆</span>
+             </div>
              
-             {submitSuccess ? (
-               <div className="text-center py-12 space-y-8 fade-in">
-                  <CheckCircle2 className="w-24 h-24 text-[#8B0000] mx-auto animate-bounce" />
-                  <div className="space-y-4">
-                    <h3 className="text-2xl md:text-3xl font-black text-[#8B0000] serif-title">資料已成功傳送！</h3>
-                    <p className="text-[#5D4037] text-lg font-light leading-loose">
-                      請加入官方 LINE 告知小編您的姓名，<br className="hidden md:block" />
-                      以利後續安排。
-                    </p>
-                  </div>
-                  <a 
-                    href="https://lin.ee/22Yqo9fe" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-3 bg-[#8B0000] text-white px-10 py-4 text-lg font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-lg"
-                  >
-                    <MessageCircle className="w-6 h-6" /> 加入官方 LINE
-                  </a>
-               </div>
-             ) : (
-               <div className="space-y-8">
-                  <div className="text-center">
-                    <h3 className="text-3xl font-black text-[#8B0000] serif-title">
-                      {modalType === 'lighting' ? '點燈祈福報名' : '線上問事預約'}
-                    </h3>
-                    <p className="text-[#C5A009] text-xs tracking-widest uppercase mt-2 font-bold">
-                      {modalType === 'lighting' ? 'Blessing Registration' : 'Consultation Booking'}
-                    </p>
-                  </div>
-
-                  <form onSubmit={handleFormSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label className="text-xs text-[#8B0000] font-bold tracking-widest">姓名</label>
-                        <input name="name" required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" placeholder="大德姓名" />
-                      </div>
-                      
-                      {modalType === 'lighting' ? (
-                        <div className="space-y-2">
-                          <label className="text-xs text-[#8B0000] font-bold tracking-widest">聯絡電話</label>
-                          <input name="phone" required type="tel" className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" placeholder="聯絡電話" />
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <label className="text-xs text-[#8B0000] font-bold tracking-widest">性別</label>
-                          <select name="gender" className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm">
-                            <option value="男">男</option>
-                            <option value="女">女</option>
-                          </select>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-xs text-[#8B0000] font-bold tracking-widest">出生年月日 (請註明農/國曆)</label>
-                      <input name="birthday" required placeholder="例：1990/01/01 (國)" className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" />
-                    </div>
-
-                    {modalType === 'lighting' ? (
-                      <>
-                        <div className="space-y-2">
-                          <label className="text-xs text-[#8B0000] font-bold tracking-widest">通訊地址</label>
-                          <input name="address" required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" placeholder="寄送福袋或收據用" />
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-xs text-[#8B0000] font-bold tracking-widest">點燈項目</label>
-                          <select name="item" className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm">
-                            {LIGHTING_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                          </select>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="space-y-2">
-                          <label className="text-xs text-[#8B0000] font-bold tracking-widest">詢問類別</label>
-                          <select name="category" className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm">
-                            {INQUIRY_CATEGORIES.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                          </select>
-                        </div>
-                        <div className="space-y-2">
-                          <label className="text-xs text-[#8B0000] font-bold tracking-widest">事由說明</label>
-                          <textarea name="reason" rows={3} required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors resize-none shadow-sm" placeholder="請簡述您的疑惑..." />
-                        </div>
-                      </>
-                    )}
-
-                    <button 
-                      type="submit" 
-                      disabled={isSubmitting}
-                      className="w-full bg-[#8B0000] text-white py-4 text-lg font-black tracking-[0.3em] hover:bg-[#C5A009] transition-all border border-[#C5A009] flex items-center justify-center gap-3 disabled:opacity-50 shadow-md"
-                    >
-                      {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : '確認傳送'}
-                    </button>
-                  </form>
-               </div>
-             )}
+             {/* 透過 Google Drive Preview 模式載入，原生支援滑動、縮放與多頁顯示 */}
+             <iframe 
+                src={`https://drive.google.com/file/d/${ROUTE_MAP_ID}/preview`} 
+                className="w-full flex-1 border-none"
+                allow="autoplay"
+                title="徒步路線手冊"
+             />
+             
+             <div className="bg-gray-100 p-3 text-center text-[10px] text-gray-400 font-bold tracking-[0.2em]">
+               提示：您可以使用兩指縮放或滑動來查看詳細路線
+             </div>
           </div>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 };
