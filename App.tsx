@@ -1,13 +1,12 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import Footer from './components/Footer';
+import Footer from '././components/Footer';
 import { Product, CartItem, Member } from './types';
 import { X, Landmark, HeartHandshake, Compass, Zap, Calendar, ArrowRight, MessageCircle, ChevronLeft, ChevronRight, Flower2, Loader2, CheckCircle2 } from 'lucide-react';
 
 // 請更換為您的 Google Apps Script 部署網址
-const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbynh2ohkjEX_XTC0JGqRQDKSLFDcj68Y6nSEuYVAG2Qv9VLU_R7d8Ms_eeoZPFkerJR/exec';
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxbsnqrwjCF3Cky5l0QRp1mb3mA1NiwSBtG2fmWNCxBXQp9tR8j_SSbTWcNYaJkhlyE/exec';
 
 type View = 'Home' | 'ProductDetail' | 'Cart' | 'Login' | 'Account' | 'Checkout' | 'History';
 
@@ -129,7 +128,8 @@ const App: React.FC = () => {
     data.timestamp = new Date().toLocaleString();
 
     try {
-      const response = await fetch(GAS_WEB_APP_URL, {
+      // POST 到 GAS (no-cors 處理)
+      await fetch(GAS_WEB_APP_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
@@ -166,10 +166,11 @@ const App: React.FC = () => {
     }
   }, [currentStatueIndex]);
 
-  const SectionTitle = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+  // Fix: Made children optional in the SectionTitle prop definition to satisfy the TypeScript compiler's requirements for JSX elements.
+  const SectionTitle = ({ children, className = "" }: { children?: React.ReactNode, className?: string }) => (
     <div className={`flex items-center justify-center gap-6 mb-16 reveal ${className}`}>
       <Flower2 className="w-6 h-6 text-[#8B0000] opacity-60" />
-      <h2 className="text-3xl md:text-6xl font-black text-[#8B0000] tracking-widest serif-title">{children}</h2>
+      <h2 className="text-3xl md:text-6xl font-black text-[#8B0000] tracking-widest serif-title drop-shadow-sm">{children}</h2>
       <Flower2 className="w-6 h-6 text-[#8B0000] opacity-60" />
     </div>
   );
@@ -181,7 +182,7 @@ const App: React.FC = () => {
         onCartClick={() => setIsCartOpen(true)}
         onUserClick={() => {}}
         onHomeClick={() => { setCurrentView('Home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-        onIntroClick={() => {}}
+        onIntroClick={() => { window.location.href = 'about.html'; }}
         user={null}
       />
 
@@ -196,22 +197,22 @@ const App: React.FC = () => {
                 <SectionTitle className="mb-10 text-[#3E2723]">最新消息</SectionTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                   {LATEST_NEWS.map((news) => (
-                    <div key={news.id} className="bg-white ornament-border p-8 md:p-10 shadow-xl reveal active border-l-4 border-[#8B0000] flex flex-col">
+                    <div key={news.id} className="bg-white ornament-border p-8 md:p-10 shadow-xl reveal active border-l-4 border-[#8B0000] flex flex-col group hover:shadow-2xl transition-all duration-500">
                       <div className="flex justify-between items-start mb-6">
-                        <span className={`px-3 py-1 text-[10px] font-black tracking-widest uppercase ${news.status === 'Active' ? 'bg-[#8B0000] text-white' : 'bg-gray-200 text-gray-500'}`}>
+                        <span className={`px-4 py-1.5 text-[10px] font-black tracking-widest uppercase ${news.status === 'Active' ? 'bg-[#8B0000] text-white shadow-md' : 'bg-gray-200 text-gray-500'}`}>
                           {news.status === 'Active' ? '最新活動' : '即將報名'}
                         </span>
                         <Calendar className="w-5 h-5 text-[#C5A009]" />
                       </div>
-                      <h4 className="text-xl md:text-2xl font-black mb-3 serif-title text-[#8B0000]">{news.title}</h4>
-                      <p className="text-gray-600 mb-6 font-light">{news.desc}</p>
+                      <h4 className="text-xl md:text-2xl font-black mb-3 serif-title text-[#8B0000] group-hover:text-[#C5A009] transition-colors">{news.title}</h4>
+                      <p className="text-[#5D4037] mb-6 font-light leading-relaxed">{news.desc}</p>
                       <div className="flex flex-col sm:flex-row justify-between items-center gap-6 mt-auto">
-                        <span className="text-xs text-[#8B0000] font-bold tracking-widest uppercase">{news.deadline}</span>
+                        <span className="text-xs text-[#8B0000] font-bold tracking-widest uppercase">截止：{news.deadline}</span>
                         <a 
                           href={news.link} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="w-full sm:w-auto bg-[#8B0000] text-white px-8 py-3 text-sm font-black tracking-widest flex items-center justify-center gap-2 hover:bg-[#C5A009] transition-all"
+                          className="w-full sm:w-auto bg-[#8B0000] text-white px-8 py-3 text-sm font-black tracking-widest flex items-center justify-center gap-2 hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-md"
                         >
                           <MessageCircle className="w-4 h-4" /> {news.action}
                         </a>
@@ -234,7 +235,7 @@ const App: React.FC = () => {
                       onClick={() => handleServiceClick(item.actionType, item.actionValue)}
                       className="flex flex-col items-center text-center reveal group cursor-pointer"
                     >
-                      <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-56 md:h-56 rounded-full border border-[#8B0000]/10 flex items-center justify-center mb-4 md:mb-10 bg-white shadow-sm group-hover:shadow-xl transition-all duration-700 overflow-hidden">
+                      <div className="relative w-16 h-16 sm:w-24 sm:h-24 md:w-56 md:h-56 rounded-full border border-[#8B0000]/10 flex items-center justify-center mb-4 md:mb-10 bg-white shadow-sm group-hover:shadow-2xl group-hover:border-[#C5A009]/30 transition-all duration-700 overflow-hidden ornament-border">
                         <img 
                           src={getDriveImageUrl(item.imgId)} 
                           className="w-[60%] h-[60%] object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
@@ -253,13 +254,13 @@ const App: React.FC = () => {
             </section>
             
             {/* 聖像莊嚴 */}
-            <section className="py-24 md:py-32 border-y border-[#8B0000]/10 relative bg-[#FDFBF7]/50">
+            <section className="py-24 md:py-32 border-y border-[#8B0000]/10 relative bg-[#FDFBF7]/30">
                <div className="container mx-auto px-6 relative">
                  <SectionTitle>聖像莊嚴</SectionTitle>
 
                  <div className="flex md:hidden absolute top-1/2 -translate-y-1/2 left-2 right-2 justify-between z-40 pointer-events-none">
-                    <button onClick={prevStatue} className="w-10 h-10 rounded-full bg-white/80 border border-[#8B0000]/20 flex items-center justify-center text-[#8B0000] pointer-events-auto"><ChevronLeft className="w-6 h-6" /></button>
-                    <button onClick={nextStatue} className="w-10 h-10 rounded-full bg-white/80 border border-[#8B0000]/20 flex items-center justify-center text-[#8B0000] pointer-events-auto"><ChevronRight className="w-6 h-6" /></button>
+                    <button onClick={prevStatue} className="w-10 h-10 rounded-full bg-white/90 border border-[#8B0000]/20 flex items-center justify-center text-[#8B0000] pointer-events-auto shadow-md" aria-label="上一個"><ChevronLeft className="w-6 h-6" /></button>
+                    <button onClick={nextStatue} className="w-10 h-10 rounded-full bg-white/90 border border-[#8B0000]/20 flex items-center justify-center text-[#8B0000] pointer-events-auto shadow-md" aria-label="下一個"><ChevronRight className="w-6 h-6" /></button>
                  </div>
 
                  <div ref={scrollContainerRef} className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-8 pb-12 px-4 md:grid md:grid-cols-3 md:px-0">
@@ -272,7 +273,7 @@ const App: React.FC = () => {
                             </div>
                          </div>
                          <div className="mt-8 text-center px-4">
-                            <p className="text-[#C5A009] leading-relaxed italic font-bold text-lg mb-3">{statue.quote}</p>
+                            <p className="text-[#C5A009] leading-relaxed italic font-bold text-lg mb-3 drop-shadow-sm">{statue.quote}</p>
                             <p className="text-[#5D4037] text-sm leading-loose font-light">{statue.description}</p>
                          </div>
                       </div>
@@ -281,7 +282,7 @@ const App: React.FC = () => {
                  
                  <div className="flex md:hidden justify-center gap-3 mt-4">
                     {DIVINE_STATUES.map((_, idx) => (
-                      <div key={idx} className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentStatueIndex ? 'bg-[#8B0000] w-6' : 'bg-gray-300'}`}/>
+                      <div key={idx} className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentStatueIndex ? 'bg-[#8B0000] w-6 shadow-sm' : 'bg-gray-300'}`}/>
                     ))}
                  </div>
                </div>
@@ -292,12 +293,12 @@ const App: React.FC = () => {
         )}
       </main>
 
-      {/* 表單彈窗 Modal - 改為米黃色調 */}
+      {/* 表單彈窗 Modal */}
       {modalType !== 'none' && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6 overflow-y-auto">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setModalType('none')}></div>
-          <div className="relative w-full max-w-2xl bg-[#FAF9F6] ornament-border p-8 md:p-12 shadow-2xl my-auto text-[#3E2723]">
-             <button onClick={() => setModalType('none')} className="absolute top-6 right-6 text-[#5D4037] hover:text-[#8B0000] transition-colors z-10"><X className="w-8 h-8" /></button>
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-6 overflow-y-auto animate-in fade-in duration-300">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setModalType('none')}></div>
+          <div className="relative w-full max-w-2xl bg-[#FAF9F6] ornament-border p-8 md:p-12 shadow-2xl my-auto text-[#3E2723] animate-in zoom-in-95 duration-300">
+             <button onClick={() => setModalType('none')} className="absolute top-6 right-6 text-[#5D4037] hover:text-[#8B0000] transition-colors z-10 p-2"><X className="w-8 h-8" /></button>
              
              {submitSuccess ? (
                <div className="text-center py-12 space-y-8 fade-in">
@@ -313,7 +314,7 @@ const App: React.FC = () => {
                     href="https://lin.ee/22Yqo9fe" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-3 bg-[#8B0000] text-white px-10 py-4 text-lg font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009]"
+                    className="inline-flex items-center justify-center gap-3 bg-[#8B0000] text-white px-10 py-4 text-lg font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-lg"
                   >
                     <MessageCircle className="w-6 h-6" /> 加入官方 LINE
                   </a>
@@ -333,13 +334,13 @@ const App: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-xs text-[#8B0000] font-bold tracking-widest">姓名</label>
-                        <input name="name" required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" />
+                        <input name="name" required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" placeholder="大德姓名" />
                       </div>
                       
                       {modalType === 'lighting' ? (
                         <div className="space-y-2">
                           <label className="text-xs text-[#8B0000] font-bold tracking-widest">聯絡電話</label>
-                          <input name="phone" required type="tel" className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" />
+                          <input name="phone" required type="tel" className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" placeholder="聯絡電話" />
                         </div>
                       ) : (
                         <div className="space-y-2">
@@ -361,7 +362,7 @@ const App: React.FC = () => {
                       <>
                         <div className="space-y-2">
                           <label className="text-xs text-[#8B0000] font-bold tracking-widest">通訊地址</label>
-                          <input name="address" required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" />
+                          <input name="address" required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors shadow-sm" placeholder="寄送福袋或收據用" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-xs text-[#8B0000] font-bold tracking-widest">點燈項目</label>
@@ -380,7 +381,7 @@ const App: React.FC = () => {
                         </div>
                         <div className="space-y-2">
                           <label className="text-xs text-[#8B0000] font-bold tracking-widest">事由說明</label>
-                          <textarea name="reason" rows={3} required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors resize-none shadow-sm" />
+                          <textarea name="reason" rows={3} required className="w-full bg-white border border-[#3E2723]/10 p-3 text-[#3E2723] focus:border-[#8B0000] outline-none transition-colors resize-none shadow-sm" placeholder="請簡述您的疑惑..." />
                         </div>
                       </>
                     )}
@@ -388,7 +389,7 @@ const App: React.FC = () => {
                     <button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="w-full bg-[#8B0000] text-white py-4 text-lg font-black tracking-[0.3em] hover:bg-[#C5A009] transition-all border border-[#C5A009] flex items-center justify-center gap-3 disabled:opacity-50"
+                      className="w-full bg-[#8B0000] text-white py-4 text-lg font-black tracking-[0.3em] hover:bg-[#C5A009] transition-all border border-[#C5A009] flex items-center justify-center gap-3 disabled:opacity-50 shadow-md"
                     >
                       {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : '確認傳送'}
                     </button>

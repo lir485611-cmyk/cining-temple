@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宮廟沿革 | 南海慈寧宮</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --temple-red: #8B0000;
+      --temple-gold: #C5A009;
+      --temple-bg: #FAF9F6;
+      --temple-paper: #FDFBF7;
+      --temple-text: #3E2723;
+    }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: var(--temple-bg);
+      background-image: radial-gradient(circle at center, var(--temple-paper) 0%, var(--temple-bg) 100%);
+      color: var(--temple-text);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+    .serif-title { font-family: 'Noto Serif TC', serif; }
+    
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .ornament-border {
+      border: 1px solid rgba(139, 0, 0, 0.1);
+      position: relative;
+    }
+    .ornament-border::before {
+      content: ""; position: absolute; top: -2px; left: -2px; width: 14px; height: 14px;
+      border-top: 2px solid var(--temple-red); border-left: 2px solid var(--temple-red);
+    }
+    .ornament-border::after {
+      content: ""; position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
+      border-bottom: 2px solid var(--temple-red); border-right: 2px solid var(--temple-red);
+    }
+    .manji-pattern::before {
+      content: ""; position: fixed; inset: 0;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMjAgMEwyMCA0ME0wIDIwTDQwIDIwTTAgMEw0MCA0ME00MCAwTDAgNDAiIHN0cm9rZT0icmdiYSg2MiwgMzksIDM1LCAwLjAzKSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=');
+      opacity: 0.5; pointer-events: none; z-index: -1;
+    }
+  </style>
+</head>
+<body class="manji-pattern">
+  <header class="py-8 bg-[#8B0000] text-white shadow-xl fixed top-0 left-0 right-0 z-50">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-black tracking-widest serif-title">南海慈寧宮</h1>
+      </div>
+      <a href="index.html" class="text-xs font-bold tracking-[0.3em] uppercase border border-white/30 px-4 py-2 hover:bg-white hover:text-[#8B0000] transition-all">返回首頁</a>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 py-32 max-w-4xl">
+    <div class="space-y-24">
+      <!-- Section 1 -->
+      <section class="reveal">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-[2px] bg-[#8B0000]"></div>
+          <h2 class="text-3xl md:text-5xl font-black text-[#8B0000] serif-title tracking-widest">緣起 ‧ 慈航普渡</h2>
+        </div>
+        <div class="bg-white ornament-border p-8 md:p-12 shadow-sm space-y-6">
+          <p class="text-lg leading-relaxed">
+            南海慈寧宮座落於山水匯聚之福地，主祀<span class="font-bold text-[#8B0000]">千手千眼觀世音菩薩</span>與<span class="font-bold text-[#8B0000]">天上聖母</span>。
+          </p>
+          <p>
+            菩薩以千眼觀照世間苦厄，聖母以慈心護佑萬民平安。自建宮以來，無數信眾於此尋求心靈寄託。本宮殿宇雖非金碧輝煌，卻承載著佛道圓融之精神，為紛擾城市中一處清淨之地。
+          </p>
+          <div class="aspect-video bg-gray-100 mt-8 overflow-hidden rounded shadow-inner">
+            <img src="https://images.unsplash.com/photo-1590059392550-99e28941783f?auto=format&fit=crop&q=80&w=1200" alt="本宮景色" class="w-full h-full object-cover opacity-70 grayscale hover:grayscale-0 transition-all duration-700">
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="reveal">
+        <div class="flex items-center gap-4 mb-8 justify-end">
+          <h2 class="text-3xl md:text-5xl font-black text-[#8B0000] serif-title tracking-widest">秉志 ‧ 靈感守護</h2>
+          <div class="w-12 h-[2px] bg-[#8B0000]"></div>
+        </div>
+        <div class="bg-white ornament-border p-8 md:p-12 shadow-sm space-y-6 text-right">
+          <p class="text-lg leading-relaxed">
+            「千處祈求千處現，苦海常作渡人舟。」
+          </p>
+          <p>
+            南海慈寧宮秉持聖母慈悲旨意，為眾生提供姻緣、事業、財運與健康之指引。無論是焚香祈福，抑或是線上問事，皆盼能為迷途心靈撥雲見日。我們深信，每一份誠心的祈求，皆能獲得神靈冥冥之中的靈感守護。
+          </p>
+        </div>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="reveal">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-[2px] bg-[#8B0000]"></div>
+          <h2 class="text-3xl md:text-5xl font-black text-[#8B0000] serif-title tracking-widest">傳承 ‧ 善緣廣結</h2>
+        </div>
+        <div class="bg-white ornament-border p-8 md:p-12 shadow-sm space-y-6">
+          <p>
+            歲次乙巳年，南海慈寧宮邁入數位轉型新紀元。透過線上報名與資訊透明化，讓遠方信眾亦能共霑神恩。
+          </p>
+          <p>
+            徒步環島、法會參與、龍柱點燈，每一項活動皆是善緣的匯聚。期許每一位踏入本宮（無論實體或線上）的大德，皆能感受到那份「寧境安心」的守護力。
+          </p>
+          <div class="pt-10 flex justify-center">
+             <a href="index.html" class="bg-[#8B0000] text-white px-12 py-4 text-xl font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-lg">返回首頁 ‧ 感受神恩</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="bg-[#8B0000] py-12 text-center text-white/60 text-xs tracking-widest">
+    &copy; 2026 南海慈寧宮 ‧ 慈雲普覆 寧境安心
+  </footer>
+
+  <script>
+    // 滾動偵測實作
+    const handleReveal = () => {
+      const reveals = document.querySelectorAll('.reveal');
+      reveals.forEach(reveal => {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveal.getBoundingClientRect().top;
+        if (revealTop < windowHeight - 80) {
+          reveal.classList.add('active');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', handleReveal);
+    window.addEventListener('load', handleReveal); // 頁面載入時先執行一次
+  </script>
+</body>
+</html>
