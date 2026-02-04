@@ -31,7 +31,7 @@
       font-family: 'Noto Serif TC', serif;
     }
 
-    /* 萬字暗紋紋理 - 調整為適合淺色背景的淡褐色 */
+    /* 萬字暗紋紋理 */
     .manji-pattern {
       position: relative;
     }
@@ -45,7 +45,6 @@
       z-index: 1;
     }
 
-    /* 文字樣式 */
     .gold-text-glow {
       text-shadow: 0 0 10px rgba(197, 160, 9, 0.2);
     }
@@ -95,10 +94,12 @@
 <script type="importmap">
 {
   "imports": {
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3",
+    "vite": "https://esm.sh/vite@^7.3.1"
   }
 }
 </script>
@@ -106,6 +107,8 @@
 </head>
 <body class="selection:bg-red-900 selection:text-white manji-pattern">
   <div id="root"></div>
+  <!-- 關鍵：載入 React 入口檔案 -->
+  <script type="module" src="./index.tsx"></script>
   <script>
     window.addEventListener('scroll', () => {
       const reveals = document.querySelectorAll('.reveal');
