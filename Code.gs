@@ -1,46 +1,20 @@
-
 /**
  * 南海慈寧宮 - Google Apps Script 後端系統
+ * 
+ * 部署須知：
+ * 1. 點擊右上角「部署」->「新增部署」。
+ * 2. 類型選擇「網頁應用程式」。
+ * 3. 執行身分：選擇「我」。
+ * 4. 誰有權限存取：選擇「任何人」。
  */
 
 const PRODUCT_SHEET_ID = '1AxzphT6sT3CYTwFDlhFftfZhLJh_OCfjCmxfF9I918U';
 const MEMBER_SHEET_ID = '1_BseP1u7W5C6ulUkJ1kMPHu7gIJWpRbY-vxCovNunDo';
 const ORDER_SHEET_ID = '1AEBWFkF1yyZe3z6E1qTAkxhpMm04YlexI-PlNoXC0Yg';
 
-// 新增指定的 Sheet IDs
+// 指定的目標回拋試算表 ID
 const LIGHTING_SHEET_ID = '1ji7dhR6UqK1Xatpiu-fRuLEc67NP6gR_0cQvFr1wMac';
 const INQUIRY_SHEET_ID = '1pbB2kXGjWt9PU8kbW0qiNDnkQ4bpIFK45fKjZOgc87A';
-
-/**
- * 密碼雜湊 helper (SHA-256)
- */
-function hashPassword(input) {
-  const rawHash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, input, Utilities.Charset.UTF_8);
-  let txtHash = '';
-  for (let i = 0; i < rawHash.length; i++) {
-    let hashVal = rawHash[i];
-    if (hashVal < 0) hashVal += 256;
-    if (hashVal.toString(16).length === 1) txtHash += '0';
-    txtHash += hashVal.toString(16);
-  }
-  return txtHash;
-}
-
-/**
- * 處理 GET 請求
- */
-function doGet(e) {
-  const action = e.parameter.action || 'getProducts';
-  
-  try {
-    if (action === 'getProducts') {
-      return getProducts();
-    }
-    return createJsonResponse({ error: '未知的 GET Action: ' + action });
-  } catch (err) {
-    return createJsonResponse({ error: '伺服器錯誤', details: err.toString() });
-  }
-}
 
 /**
  * 處理 POST 請求
@@ -50,24 +24,18 @@ function doPost(e) {
     const params = JSON.parse(e.postData.contents);
     const action = params.action;
 
-    if (action === 'register') {
-      return registerMember(params);
-    } else if (action === 'login') {
-      return loginMember(params);
-    } else if (action === 'createOrder') {
-      return createOrder(params);
-    } else if (action === 'submitCustomForm') {
+    if (action === 'submitCustomForm') {
       return handleCustomFormSubmission(params);
     }
     
-    return createJsonResponse({ error: '未知的 POST Action: ' + action });
+    return createJsonResponse({ error: '未知的 Action: ' + action });
   } catch (err) {
-    return createJsonResponse({ error: '處理 POST 請求失敗', details: err.toString() });
+    return createJsonResponse({ error: '系統錯誤', details: err.toString() });
   }
 }
 
 /**
- * 處理點燈與問事表單提交
+ * 處理點燈與問事表單提交 (回拋至指定 Sheet)
  */
 function handleCustomFormSubmission(data) {
   try {
@@ -75,212 +43,64 @@ function handleCustomFormSubmission(data) {
     const ss = SpreadsheetApp.openById(ssId);
     const sheet = ss.getSheets()[0];
     
-    // 獲取標題行以確定欄位順序
-    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    let lastCol = sheet.getLastColumn();
+    if (lastCol === 0) {
+      const isLighting = data.formType === '點燈報名';
+      const defaultHeaders = [
+        "提交時間", 
+        "姓名", 
+        "電話", 
+        "生日", 
+        "性別", 
+        "地址", 
+        isLighting ? "項目" : "類別", 
+        isLighting ? "說明" : "事由"
+      ];
+      sheet.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
+      lastCol = defaultHeaders.length;
+    }
     
-    const rowData = headers.map(header => {
+    const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    
+    const newRow = headers.map(header => {
       const h = header.toString().trim();
-      // 匹配欄位名稱（這裡假設 Sheet 欄位與資料 key 對應）
-      if (h.includes('時間') || h.toLowerCase().includes('timestamp')) return data.timestamp || new Date().toLocaleString();
-      if (h.includes('姓名')) return data.name || '';
-      if (h.includes('電話')) return data.phone || '';
-      if (h.includes('生日') || h.includes('出生')) return data.birthday || '';
-      if (h.includes('地址')) return data.address || '';
-      if (h.includes('項目')) return data.item || '';
-      if (h.includes('性別')) return data.gender || '';
-      if (h.includes('類別')) return data.category || '';
-      if (h.includes('事由') || h.includes('說明')) return data.reason || '';
+      if (h === '提交時間' || h === '時間' || h.toLowerCase() === 'timestamp') return data.timestamp || new Date().toLocaleString();
+      if (h === '姓名') return data.name || '';
+      if (h === '電話') return data.phone || '';
+      if (h === '生日' || h === '出生日期') return data.birthday || '';
+      if (h === '性別') return data.gender || '';
+      if (h === '地址') return data.address || '';
+      if (h === '項目' || h === '類別' || h === '請示類別') return data.item || '';
+      if (h === '說明' || h === '事由' || h === '內容' || h === '問事說明' || h === '祈願內容') return data.reason || '';
       return '';
     });
 
-    sheet.appendRow(rowData);
-    return createJsonResponse({ success: true });
+    sheet.appendRow(newRow);
+    return createJsonResponse({ success: true, message: '資料已成功寫入試算表' });
   } catch (e) {
-    return createJsonResponse({ error: '儲存表單失敗', details: e.toString() });
+    return createJsonResponse({ error: '寫入試算表失敗', details: e.toString() });
   }
 }
 
-/**
- * 創建訂單與扣除庫存
- */
-function createOrder(data) {
-  const lock = LockService.getScriptLock();
+function doGet(e) {
+  const action = e.parameter.action || 'getProducts';
   try {
-    lock.waitLock(10000); 
-
-    const productSS = SpreadsheetApp.openById(PRODUCT_SHEET_ID);
-    const productSheet = productSS.getSheetByName('商品清單') || productSS.getSheets()[0];
-    const productData = productSheet.getDataRange().getValues();
-    const productHeaders = productData[0].map(h => h.toString().toLowerCase().trim());
-    
-    const idIdx = productHeaders.indexOf('product_id');
-    const stockIdx = productHeaders.indexOf('stock');
-    const nameIdx = productHeaders.indexOf('name');
-
-    const cartItems = data.items;
-    const updates = [];
-
-    for (const item of cartItems) {
-      let found = false;
-      for (let i = 1; i < productData.length; i++) {
-        if (productData[i][idIdx].toString() === item.product_id) {
-          const currentStock = Number(productData[i][stockIdx]) || 0;
-          if (currentStock < item.quantity) {
-            return createJsonResponse({ error: `庫存不足：${productData[i][nameIdx]} 僅剩 ${currentStock}` });
-          }
-          updates.push({ row: i + 1, newStock: currentStock - item.quantity });
-          found = true;
-          break;
-        }
-      }
-      if (!found) return createJsonResponse({ error: `找不到商品 ID: ${item.product_id}` });
+    if (action === 'getProducts') {
+      const ss = SpreadsheetApp.openById(PRODUCT_SHEET_ID);
+      const sheet = ss.getSheets()[0];
+      const data = sheet.getDataRange().getValues();
+      const headers = data[0].map(h => h.toString().toLowerCase().trim());
+      const products = data.slice(1).map(row => {
+        let obj = {};
+        headers.forEach((h, i) => { obj[h] = row[i]; });
+        return obj;
+      }).filter(p => p.status === 'Active');
+      return createJsonResponse(products);
     }
-
-    updates.forEach(upd => {
-      productSheet.getRange(upd.row, stockIdx + 1).setValue(upd.newStock);
-    });
-
-    const orderSS = SpreadsheetApp.openById(ORDER_SHEET_ID);
-    const orderSheet = orderSS.getSheetByName('訂單資訊') || orderSS.getSheets()[0];
-    const orderHeaders = orderSheet.getDataRange().getValues()[0].map(h => h.toString().toLowerCase().trim());
-    
-    const orderId = 'ORD' + new Date().getTime();
-    const createdAt = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
-
-    const newOrderRow = orderHeaders.map(h => {
-      switch(h) {
-        case 'o_id': return orderId;
-        case 'm_id': return data.m_id;
-        case 'o_items': return JSON.stringify(data.items);
-        case 'o_total': return data.o_total;
-        case 'o_status': return 'Pending';
-        case 'o_shipping_addr': return data.o_shipping_addr;
-        case 'o_created_at': return createdAt;
-        default: return '';
-      }
-    });
-
-    orderSheet.appendRow(newOrderRow);
-    return createJsonResponse({ success: true, order_id: orderId });
-  } catch (e) {
-    return createJsonResponse({ error: '下單失敗', details: e.toString() });
-  } finally {
-    lock.releaseLock();
+    return createJsonResponse({ error: '未知的 GET Action' });
+  } catch (err) {
+    return createJsonResponse({ error: '伺服器錯誤', details: err.toString() });
   }
-}
-
-/**
- * 商品讀取邏輯
- */
-function getProducts() {
-  try {
-    const ss = SpreadsheetApp.openById(PRODUCT_SHEET_ID);
-    let sheet = ss.getSheetByName('商品清單') || ss.getSheets()[0];
-    const data = sheet.getDataRange().getValues();
-    
-    if (data.length < 2) return createJsonResponse({ error: '試算表內尚無法務項目數據' });
-
-    const headers = data[0].map(h => h.toString().trim().toLowerCase());
-    const keyMap = {
-      'product_id': 'product_id',
-      'name': 'name',
-      'category': 'category',
-      'price': 'price',
-      'original_price': 'original_price',
-      'stock': 'stock',
-      'image_url': 'image_url',
-      'description': 'description',
-      'detail_content': 'detail_content',
-      'spec': 'spec',
-      'status': 'status'
-    };
-
-    const products = data.slice(1).map((row, idx) => {
-      if (row.every(cell => cell === "" || cell === null)) return null;
-      let obj = {};
-      headers.forEach((h, i) => {
-        let key = keyMap[h] || h;
-        let val = row[i];
-        if (['price', 'original_price', 'stock'].includes(key)) val = Number(val) || 0;
-        obj[key] = val;
-      });
-
-      let strUrl = (obj.image_url || "").toString();
-      if (strUrl.indexOf('drive.google.com') > -1) {
-        let idMatch = strUrl.match(/\/d\/([-\w]{25,})/) || strUrl.match(/[?&]id=([-\w]{25,})/);
-        if (idMatch) obj.image_url = "https://drive.google.com/uc?export=view&id=" + idMatch[1];
-      }
-      if (!obj.product_id) obj.product_id = 'S' + (idx + 1).toString().padStart(3, '0');
-      return obj;
-    }).filter(p => p !== null && p.name && p.status === 'Active');
-
-    return createJsonResponse(products);
-  } catch (e) {
-    return createJsonResponse({ error: '抓取試算表失敗', details: e.toString() });
-  }
-}
-
-/**
- * 會員驗證
- */
-function loginMember(data) {
-  const ss = SpreadsheetApp.openById(MEMBER_SHEET_ID);
-  let sheet = ss.getSheetByName('會員清單') || ss.getSheets()[0];
-  const values = sheet.getDataRange().getValues();
-  const headers = values[0].map(h => h.toString().toLowerCase().trim());
-  const emailIdx = headers.indexOf('email');
-  const pwdIdx = headers.indexOf('password');
-  const hashedInputPassword = hashPassword(data.password);
-
-  for (let i = 1; i < values.length; i++) {
-    const row = values[i];
-    if (row[emailIdx].toString().trim().toLowerCase() === data.email.trim().toLowerCase() && 
-        row[pwdIdx].toString() === hashedInputPassword) {
-      const member = {};
-      headers.forEach((header, idx) => { if (header !== 'password') member[header] = row[idx]; });
-      return createJsonResponse({ success: true, member: member });
-    }
-  }
-  return createJsonResponse({ error: '電子郵件或密碼不正確' });
-}
-
-function registerMember(data) {
-  const ss = SpreadsheetApp.openById(MEMBER_SHEET_ID);
-  let sheet = ss.getSheetByName('會員清單') || ss.getSheets()[0];
-  const values = sheet.getDataRange().getValues();
-  const headers = values[0].map(h => h.toString().toLowerCase().trim());
-  const emailIndex = headers.indexOf('email');
-  
-  if (emailIndex !== -1) {
-    for (let i = 1; i < values.length; i++) {
-      if (values[i][emailIndex].toString().toLowerCase().trim() === data.email.toLowerCase().trim()) {
-        return createJsonResponse({ error: '此電子郵件已被註冊' });
-      }
-    }
-  }
-
-  const newId = 'M' + new Date().getTime();
-  const createdAt = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
-  const hashedPassword = hashPassword(data.password);
-
-  const newRow = headers.map(h => {
-    switch(h) {
-      case 'member_id': return newId;
-      case 'email': return data.email;
-      case 'password': return hashedPassword;
-      case 'full_name': return data.full_name || '';
-      case 'phone': return data.phone || '';
-      case 'address': return data.address || '';
-      case 'gender': return data.gender || '';
-      case 'birthday': return data.birthday || '';
-      case 'member_level': return 'Regular';
-      case 'created_at': return createdAt;
-      default: return '';
-    }
-  });
-
-  sheet.appendRow(newRow);
-  return createJsonResponse({ success: true, member: { member_id: newId, email: data.email, full_name: data.full_name, address: data.address } });
 }
 
 function createJsonResponse(data) {
