@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -12,11 +13,7 @@ export const getDriveImageUrl = (id: string) => {
 };
 
 const ROUTE_MAP_ID = '1ZS5SILdpJXxlNxpCXpLk963SBGuv_1sn';
-
-/**
- * 重要：請將下方的網址替換為您在 Google Apps Script「部署」後取得的「網頁應用程式 URL」。
- */
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxMpcQEBFtDCJULvPZz1rZZfJ1mcduue2w3DlEw2Thj3NlovjM8dW4sqyt3U1pP_Yc/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwSSYlvk7_xln3-WHB7tSKtIRrZ2xtSSMb_9QEMWqZucmU37HgAABL-mpXRRpciaawb/exec'; 
 
 const LATEST_NEWS = [
   {
@@ -53,7 +50,6 @@ const LATEST_NEWS = [
   }
 ];
 
-// Added DIVINE_STATUES constant to fix the compilation error
 const DIVINE_STATUES = [
   {
     name: '天上聖母',
@@ -63,15 +59,21 @@ const DIVINE_STATUES = [
   },
   {
     name: '千手千眼觀世音菩薩',
-    imgId: '1eCe_3ffYdKIe1-eEXEQdnL9ojsUqOQeo', // Placeholder ID
+    imgId: '1VVFGy1FdpVHWK-nG45D7dGcttBZbXgCG',
     quote: '慈悲廣大，隨類應現',
     description: '具足千手，救護眾生；具足千眼，照明世間。觀世音菩薩以慈悲救苦救難，感應十方信眾。'
   },
   {
-    name: '福德正神',
-    imgId: '1eCe_3ffYdKIe1-eEXEQdnL9ojsUqOQeo', // Placeholder ID
-    quote: '守護家園，財源廣進',
-    description: '土地之神，司掌禍福。保佑地方安寧，護持有緣信眾財利亨通、事事順遂。'
+    name: '武財神',
+    imgId: '1ZS5SILdpJXxlNxpCXpLk963SBGuv_1sn', // Placeholder
+    quote: '招財進寶，事業亨通',
+    description: '主掌天下財源，為勤奮經營的大德招財開運、指引財路，助事業蒸蒸日上。'
+  },
+  {
+    name: '虎爺大將軍',
+    imgId: '1-8qfVQXgkSNi__jJFddNPEtWinNaGgAP',
+    quote: '驅邪鎮宅，守護財庫',
+    description: '鎮守神龕之下，具備強大的驅邪與咬錢招財之力。護佑孩童平安長大，避開小人是非。'
   }
 ];
 
@@ -85,7 +87,6 @@ const App: React.FC = () => {
   const [formItems, setFormItems] = useState<string[]>([]);
   const statueScrollRef = useRef<HTMLDivElement>(null);
 
-  // 表單狀態
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -121,11 +122,6 @@ const App: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (GAS_API_URL.includes('YOUR_ACTUAL_DEPLOYED_ID')) {
-      alert('請先在 App.tsx 中第 21 行替換正式的 GAS API URL。');
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const payload = {
@@ -180,7 +176,6 @@ const App: React.FC = () => {
             <section className="relative z-40 px-4 pt-24 md:pt-40">
               <div className="container mx-auto max-w-5xl">
                 <SectionTitle className="mb-12">最新消息</SectionTitle>
-                {/* 修改為 lg:grid-cols-2 實現兩個一行 */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                   {LATEST_NEWS.map((news) => (
                     <div key={news.id} className="bg-white ornament-border p-8 md:p-10 shadow-xl border-l-4 border-[#8B0000] flex flex-col group transition-all duration-500 hover:-translate-y-1">
@@ -226,7 +221,6 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 聖像莊嚴輪播 */}
             <section className="py-24 md:py-40 bg-white mt-32 overflow-hidden">
                <div className="container mx-auto">
                  <div className="flex justify-center mb-24">
@@ -241,7 +235,13 @@ const App: React.FC = () => {
                          <div key={idx} className="flex-shrink-0 w-full md:w-[600px] snap-center">
                             <div className="group">
                                <div className="relative aspect-[3/4] overflow-hidden ornament-border bg-[#FDFBF7] flex items-center justify-center p-8 md:p-12 shadow-sm group-hover:shadow-2xl transition-all duration-1000">
-                                  <img src={getDriveImageUrl(statue.imgId)} className="max-w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105" alt={statue.name} />
+                                  {statue.imgId ? (
+                                    <img src={getDriveImageUrl(statue.imgId)} className="max-w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105" alt={statue.name} />
+                                  ) : (
+                                    <div className="w-32 h-32 border-8 border-[#C5A009] rounded-full flex items-center justify-center">
+                                      <span className="text-[#C5A009] text-6xl font-black serif-title">財</span>
+                                    </div>
+                                  )}
                                </div>
                                <div className="mt-12 text-center px-4">
                                   <h3 className="text-3xl font-black text-[#B22222] serif-title mb-4 tracking-widest">{statue.name}</h3>
@@ -272,8 +272,9 @@ const App: React.FC = () => {
                   <h2 className="text-2xl md:text-3xl font-black text-[#8B0000] serif-title tracking-widest">緣起 ‧ 慈航普渡</h2>
                 </div>
                 <p className="text-lg leading-relaxed text-[#3E2723]">
-                  南海慈寧宮座落於山水匯聚之福地，主祀<span className="font-bold text-[#8B0000]">千手千眼觀世音菩薩</span>與<span className="font-bold text-[#8B0000]">天上聖母</span>。
+                  南海慈寧宮座落於山水匯聚之福地，主祀<span className="font-bold text-[#8B0000]">天上聖母</span>與<span className="font-bold text-[#8B0000]">千手千眼觀世音菩薩</span>。
                 </p>
+                <p>菩薩以千眼觀照世間苦厄，聖母以慈心護佑萬民平安。自建宮以來，無數信眾於此尋求心靈寄託。</p>
              </section>
              <div className="text-center mt-20">
                 <button onClick={() => setCurrentView('Home')} className="bg-[#8B0000] text-white px-12 py-4 text-xl font-black tracking-widest hover:bg-[#C5A009] transition-all border border-[#C5A009] shadow-lg">返回首頁</button>
@@ -285,13 +286,21 @@ const App: React.FC = () => {
           <div className="fade-in bg-white py-40">
              <div className="container mx-auto px-6 max-w-5xl text-center">
                 <SectionTitle>祀奉神尊</SectionTitle>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                    {DIVINE_STATUES.map(s => (
                      <div key={s.name} className="flex flex-col items-center">
-                        <div className="w-full aspect-[3/4] bg-gray-50 flex items-center justify-center p-4 border border-gray-100 shadow-inner mb-8">
-                           <img src={getDriveImageUrl(s.imgId)} className="max-h-full object-contain" alt={s.name}/>
+                        <div className="w-full aspect-[3/4] bg-gray-50 flex items-center justify-center p-4 border border-gray-100 shadow-inner mb-8 overflow-hidden ornament-border">
+                           {s.imgId ? (
+                             <img src={getDriveImageUrl(s.imgId)} className="max-h-full object-contain" alt={s.name}/>
+                           ) : (
+                             <div className="w-48 h-48 border-8 border-[#C5A009] rounded-full flex items-center justify-center">
+                               <span className="text-[#C5A009] text-8xl font-black serif-title">財</span>
+                             </div>
+                           )}
                         </div>
                         <h4 className="text-2xl font-black serif-title text-[#8B0000] mb-4">{s.name}</h4>
+                        <p className="text-[#C5A009] font-bold mb-2">{s.quote}</p>
+                        <p className="text-gray-500 text-sm max-w-xs">{s.description}</p>
                      </div>
                    ))}
                 </div>
@@ -324,7 +333,6 @@ const App: React.FC = () => {
         )}
       </main>
 
-      {/* 線上報名表單彈窗 */}
       {isFormOpen && (
         <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-300 backdrop-blur-sm">
            <div className="bg-white w-full max-w-xl ornament-border shadow-2xl relative flex flex-col max-h-[90vh]">
@@ -333,126 +341,49 @@ const App: React.FC = () => {
                   <div className="bg-[#8B0000] text-white p-6 flex justify-between items-center shadow-lg">
                     <div>
                       <h3 className="text-2xl font-black serif-title tracking-widest">線上報名 ‧ {formType}</h3>
-                      <p className="text-[10px] opacity-60 tracking-[0.3em] uppercase mt-1">Cining Temple Online Service</p>
                     </div>
                     <button onClick={() => setIsFormOpen(false)} className="hover:rotate-90 transition-transform p-2">
                       <X className="w-8 h-8" />
                     </button>
                   </div>
-
                   <form onSubmit={handleFormSubmit} className="p-8 space-y-5 overflow-y-auto no-scrollbar">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div className="space-y-2">
-                        <label className="text-xs font-black text-[#8B0000] flex items-center gap-2 tracking-widest uppercase"><User className="w-3 h-3" /> 信眾姓名</label>
-                        <input required type="text" placeholder="請輸入姓名" className="w-full bg-[#FDFBF7] border border-gray-100 p-4 focus:ring-1 focus:ring-[#8B0000] outline-none transition-all serif-title"
+                        <label className="text-xs font-black text-[#8B0000] uppercase tracking-widest">信眾姓名</label>
+                        <input required type="text" placeholder="請輸入姓名" className="w-full bg-[#FDFBF7] border border-gray-100 p-4 outline-none focus:ring-1 focus:ring-[#8B0000]"
                           value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-black text-[#8B0000] flex items-center gap-2 tracking-widest uppercase"><PhoneIcon className="w-3 h-3" /> 聯絡電話</label>
-                        <input required type="tel" placeholder="請輸入電話" className="w-full bg-[#FDFBF7] border border-gray-100 p-4 focus:ring-1 focus:ring-[#8B0000] outline-none transition-all"
+                        <label className="text-xs font-black text-[#8B0000] uppercase tracking-widest">聯絡電話</label>
+                        <input required type="tel" placeholder="請輸入電話" className="w-full bg-[#FDFBF7] border border-gray-100 p-4 outline-none focus:ring-1 focus:ring-[#8B0000]"
                           value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
                       </div>
                     </div>
-
-                    {/* 生日欄位包含類別選擇 */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-end mb-1">
-                        <label className="text-xs font-black text-[#8B0000] flex items-center gap-2 tracking-widest uppercase"><Cake className="w-3 h-3" /> 出生日期</label>
-                        <div className="flex gap-3 bg-white px-3 py-1 border border-gray-100 shadow-sm rounded-sm">
-                          {['國曆', '農曆'].map((type) => (
-                            <label key={type} className="flex items-center gap-1.5 cursor-pointer group">
-                              <input type="radio" name="birthdayType" value={type} checked={formData.birthdayType === type} onChange={(e) => setFormData({...formData, birthdayType: e.target.value})}
-                                className="w-3 h-3 accent-[#8B0000]" />
-                              <span className={`text-[11px] font-bold ${formData.birthdayType === type ? 'text-[#8B0000]' : 'text-gray-400 group-hover:text-gray-600'}`}>{type}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                      <input required type="text" placeholder={`請輸入${formData.birthdayType}日期 (例：70/5/20)`} className="w-full bg-[#FDFBF7] border border-gray-100 p-4 focus:ring-1 focus:ring-[#8B0000] outline-none transition-all"
-                        value={formData.birthday} onChange={(e) => setFormData({...formData, birthday: e.target.value})} />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div className="space-y-2">
-                        <label className="text-xs font-black text-[#8B0000] flex items-center gap-2 tracking-widest uppercase">性別</label>
-                        <div className="flex gap-4 p-4 bg-[#FDFBF7] border border-gray-100">
-                          {['男', '女'].map((g) => (
-                            <label key={g} className="flex items-center gap-2 cursor-pointer group">
-                              <input type="radio" name="gender" value={g} checked={formData.gender === g} onChange={(e) => setFormData({...formData, gender: e.target.value})}
-                                className="w-4 h-4 accent-[#8B0000]" />
-                              <span className="text-sm font-bold group-hover:text-[#8B0000]">{g}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-black text-[#8B0000] flex items-center gap-2 tracking-widest uppercase"><Flower2 className="w-3 h-3" /> {formType === '線上問事' ? '請示類別' : '祈福項目'}</label>
-                        <select className="w-full bg-[#FDFBF7] border border-gray-100 p-4 focus:ring-1 focus:ring-[#8B0000] outline-none transition-all serif-title"
-                          value={formData.item} onChange={(e) => setFormData({...formData, item: e.target.value})}>
-                          {formItems.map(item => <option key={item} value={item}>{item}</option>)}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-xs font-black text-[#8B0000] flex items-center gap-2 tracking-widest uppercase"><Home className="w-3 h-3" /> 現居地址</label>
-                      <input required type="text" placeholder="請輸入完整地址" className="w-full bg-[#FDFBF7] border border-gray-100 p-4 focus:ring-1 focus:ring-[#8B0000] outline-none transition-all"
-                        value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-xs font-black text-[#8B0000] flex items-center gap-2 tracking-widest uppercase"><MessageCircle className="w-3 h-3" /> {formType === '線上問事' ? '問事說明' : '祈願內容 (選填)'}</label>
-                      <textarea placeholder={formType === '線上問事' ? "請簡述您想請示聖母的事由..." : "請寫下您的祈願..."}
-                        className="w-full bg-[#FDFBF7] border border-gray-100 p-4 focus:ring-1 focus:ring-[#8B0000] outline-none transition-all min-h-[80px] resize-none"
-                        value={formData.reason} onChange={(e) => setFormData({...formData, reason: e.target.value})}></textarea>
-                    </div>
-
                     <div className="pt-4">
-                      <button disabled={isSubmitting} type="submit"
-                        className={`w-full py-5 bg-[#8B0000] text-white font-black tracking-[0.5em] text-lg shadow-xl hover:bg-[#C5A009] transition-all flex items-center justify-center gap-3 border border-[#C5A009] ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                        {isSubmitting ? '報名資料傳送中...' : '誠心報名 ‧ 送出資料'}
-                        {!isSubmitting && <Send className="w-5 h-5" />}
+                      <button disabled={isSubmitting} type="submit" className="w-full py-5 bg-[#8B0000] text-white font-black tracking-[0.5em] hover:bg-[#C5A009] transition-all">
+                        {isSubmitting ? '傳送中...' : '誠心報名 ‧ 送出資料'}
                       </button>
                     </div>
                   </form>
                 </>
               ) : (
                 <div className="p-12 text-center space-y-8 animate-in zoom-in-95 duration-500">
-                  <div className="flex justify-center">
-                    <div className="w-24 h-24 bg-[#8B0000]/10 rounded-full flex items-center justify-center">
-                      <CheckCircle2 className="w-16 h-16 text-[#8B0000] animate-bounce" />
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <h3 className="text-3xl font-black serif-title text-[#8B0000] tracking-widest">已送出申請</h3>
-                    <p className="text-[#5D4037] leading-loose">
-                      感謝大德誠心參與本宮 {formType}。<br />
-                      報名資訊已成功傳送並標註提交時間。<br />
-                      師姐將於三個工作日內盡速與您聯繫。<br />
-                      <span className="font-bold">慈雲普覆，寧境安心。</span>
-                    </p>
-                  </div>
-                  <button onClick={() => setIsFormOpen(false)} 
-                    className="bg-[#8B0000] text-white px-12 py-4 font-black tracking-widest shadow-lg border border-[#C5A009] hover:bg-[#C5A009] transition-all">
-                    了解，法喜充滿
-                  </button>
+                  <CheckCircle2 className="w-16 h-16 text-[#8B0000] mx-auto animate-bounce" />
+                  <h3 className="text-3xl font-black serif-title text-[#8B0000]">已送出申請</h3>
+                  <button onClick={() => setIsFormOpen(false)} className="bg-[#8B0000] text-white px-12 py-4 font-black">了解，法喜充滿</button>
                 </div>
               )}
            </div>
         </div>
       )}
 
-      {/* 徒步路線燈箱 */}
       {isMapOpen && (
         <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/90 p-4 md:p-12 animate-in fade-in duration-300 backdrop-blur-md">
-          <button onClick={() => setIsMapOpen(false)} className="absolute top-6 right-6 text-white/60 hover:text-white transition-all z-[310] p-3 bg-white/10 rounded-full hover:bg-white/20">
+          <button onClick={() => setIsMapOpen(false)} className="absolute top-6 right-6 text-white/60 hover:text-white transition-all z-[310] p-3 bg-white/10 rounded-full">
             <X className="w-10 h-10" />
           </button>
-          <div className="w-full h-full max-w-5xl bg-white shadow-2xl rounded-lg overflow-hidden flex flex-col relative">
-             <div className="bg-[#8B0000] text-white px-8 py-4 flex justify-between items-center">
-                <span className="font-black tracking-widest serif-title">丙午年徒步環島 ‧ 路線手冊</span>
-             </div>
-             <iframe src={`https://drive.google.com/file/d/${ROUTE_MAP_ID}/preview`} className="w-full flex-1 border-none" allow="autoplay" title="徒步路線手冊" />
+          <div className="w-full h-full max-w-5xl bg-white shadow-2xl rounded-lg overflow-hidden relative">
+             <iframe src={`https://drive.google.com/file/d/${ROUTE_MAP_ID}/preview`} className="w-full h-full border-none" allow="autoplay" title="徒步路線手冊" />
           </div>
         </div>
       )}

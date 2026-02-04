@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -23,61 +24,9 @@
       overflow-x: hidden;
     }
     .serif-title { font-family: 'Noto Serif TC', serif; }
-    
-    /* 捲動顯現動畫 */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
-    }
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* 神尊卡片裝飾 */
-    .god-card {
-      border: 1px solid rgba(178, 34, 34, 0.08);
-      background: #FFFFFF;
-      transition: all 0.5s ease;
-      position: relative;
-    }
-    .god-card:hover {
-      box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-      border-color: var(--temple-red);
-    }
-    
-    /* 紅底標題塊 */
-    .title-badge {
-      background-color: var(--temple-red);
-      color: #FFFFFF;
-      padding: 0.6rem 2rem;
-      display: inline-block;
-      font-weight: 900;
-      letter-spacing: 0.3em;
-      box-shadow: 3px 3px 0px var(--temple-gold);
-      margin-bottom: 1.5rem;
-    }
-
-    .back-home-btn {
-      border: 2px solid var(--temple-red);
-      color: var(--temple-red);
-      padding: 1rem 3rem;
-      font-weight: 900;
-      letter-spacing: 0.4em;
-      transition: all 0.3s ease;
-    }
-    .back-home-btn:hover {
-      background-color: var(--temple-red);
-      color: #FFFFFF;
-    }
-
-    /* 萬字暗紋 (極淡) */
-    .manji-overlay::before {
-      content: ""; position: fixed; inset: 0;
-      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMjAgMEwyMCA0ME0wIDIwTDQwIDIwTTAgMEw0MCA0ME00MCAwTDAgNDAiIHN0cm9rZT0icmdiYSgwLCAwLCAwLCAwLjAxNSkiIHN0cm9rZS13aWR0aD0iMC41Ii8+PC9zdmc+');
-      opacity: 1; pointer-events: none; z-index: -1;
-    }
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.2, 1, 0.3, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .title-badge { background-color: var(--temple-red); color: #FFFFFF; padding: 0.6rem 2rem; display: inline-block; font-weight: 900; letter-spacing: 0.3em; box-shadow: 3px 3px 0px var(--temple-gold); margin-bottom: 1.5rem; }
   </style>
 </head>
 <body class="manji-overlay">
@@ -87,7 +36,7 @@
         <div class="w-10 h-10 bg-[#B22222] flex items-center justify-center text-white text-xl font-black serif-title">慈</div>
         <h1 class="text-xl font-black tracking-[0.2em] serif-title text-[#B22222]">南海慈寧宮</h1>
       </div>
-      <a href="./index.html" class="text-xs font-bold tracking-widest text-gray-400 hover:text-[#B22222] transition-colors">返回首頁</a>
+      <a href="./index.html" class="text-xs font-bold tracking-widest text-gray-400 hover:text-[#B22222]">返回首頁</a>
     </div>
   </header>
 
@@ -95,99 +44,69 @@
     <div class="text-center mb-24 reveal">
       <h2 class="text-4xl md:text-6xl font-black text-[#B22222] serif-title tracking-[0.4em] mb-6">祀奉神尊</h2>
       <div class="w-20 h-1 bg-[#C5A009] mx-auto"></div>
-      <p class="mt-8 text-gray-400 text-sm tracking-[0.5em] uppercase">The Divine Pantheon</p>
     </div>
 
     <div class="space-y-32">
       <!-- 天上聖母 -->
       <section class="reveal grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="order-2 md:order-1">
+        <div>
           <div class="title-badge serif-title text-xl">天上聖母</div>
           <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">慈航普渡 ‧ 鎮殿主神</h3>
-          <p class="text-[#333333] leading-relaxed text-lg text-justify font-light">
-            天上聖母（媽祖）為南海慈寧宮之主神，以慈悲大愛護佑眾生。無論祈求家內平安、消災解厄，皆感應如響，是信眾心靈最堅實的依靠。
-          </p>
+          <p class="text-[#333333] leading-relaxed text-lg">天上聖母（媽祖）為南海慈寧宮之主神，以慈悲大愛護佑眾生。</p>
         </div>
-        <div class="order-1 md:order-2 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
+        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
            <img src="https://lh3.googleusercontent.com/d/1eCe_3ffYdKIe1-eEXEQdnL9ojsUqOQeo" alt="天上聖母" class="max-h-full object-contain">
         </div>
       </section>
 
       <!-- 觀世音菩薩 -->
       <section class="reveal grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
+        <div class="order-2 md:order-1 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
            <img src="https://lh3.googleusercontent.com/d/1VVFGy1FdpVHWK-nG45D7dGcttBZbXgCG" alt="觀世音菩薩" class="max-h-full object-contain">
         </div>
-        <div>
+        <div class="order-1 md:order-2">
           <div class="title-badge serif-title text-xl">觀世音菩薩</div>
           <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">慈悲示現 ‧ 靈感守護</h3>
-          <p class="text-[#333333] leading-relaxed text-lg text-justify font-light">
-            菩薩具足大威神力，普門示現度一切苦。菩薩聽聞眾生疾苦，以大智大悲引領迷途心靈找回正向力量，令信眾皆能「慈雲普覆、寧境安心」。
-          </p>
+          <p class="text-[#333333] leading-relaxed text-lg">菩薩具足大威神力，聽聞眾生疾苦，引領迷途心靈找回正向力量。</p>
         </div>
       </section>
 
       <!-- 武財神 -->
       <section class="reveal grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="order-2 md:order-1">
+        <div>
           <div class="title-badge serif-title text-xl">武財神</div>
           <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">招財進寶 ‧ 事業亨通</h3>
-          <div class="bg-gray-50 aspect-square flex flex-col items-center justify-center p-12 border border-gray-100 mb-6 md:hidden">
-             <div class="w-32 h-32 border-4 border-[#C5A009] rounded-full flex items-center justify-center">
-                <span class="text-[#C5A009] text-5xl font-black serif-title">財</span>
-             </div>
-          </div>
-          <p class="text-[#333333] leading-relaxed text-lg text-justify font-light">
-            威震八方的武財神，主掌天下財源。為勤奮經營的大德招財開運、指引財路，助事業蒸蒸日上。
-          </p>
+          <p class="text-[#333333] leading-relaxed text-lg">威震八方的武財神，主掌天下財源，為信眾開運引財。</p>
         </div>
-        <div class="order-1 md:order-2 hidden md:flex bg-gray-50 aspect-square items-center justify-center p-8 border border-gray-100 shadow-inner">
+        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
            <div class="w-48 h-48 border-8 border-[#C5A009] rounded-full flex items-center justify-center">
               <span class="text-[#C5A009] text-8xl font-black serif-title">財</span>
            </div>
         </div>
       </section>
 
-      <!-- 虎爺大將軍 -->
+      <!-- 虎爺 -->
       <section class="reveal grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
+        <div class="order-2 md:order-1 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
            <img src="https://lh3.googleusercontent.com/d/1-8qfVQXgkSNi__jJFddNPEtWinNaGgAP" alt="虎爺大將軍" class="max-h-full object-contain">
         </div>
-        <div>
+        <div class="order-1 md:order-2">
           <div class="title-badge serif-title text-xl">虎爺大將軍</div>
           <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">驅邪鎮宅 ‧ 守護財庫</h3>
-          <p class="text-[#333333] leading-relaxed text-lg text-justify font-light">
-            威風凜凜的虎爺大將軍，鎮守神龕之下，具備強大的驅邪與咬錢招財之力。護佑孩童平安長大，並幫助信眾避開小人是非。
-          </p>
+          <p class="text-[#333333] leading-relaxed text-lg">鎮守神龕之下，護佑孩童，並具備強大的驅邪與招財之力。</p>
         </div>
       </section>
     </div>
 
     <div class="mt-40 text-center pb-20 reveal">
-      <a href="./index.html" class="back-home-btn inline-block">返回首頁 ‧ 感受神恩</a>
+      <a href="./index.html" class="inline-block border-2 border-[#B22222] text-[#B22222] px-12 py-4 font-black">返回首頁</a>
     </div>
   </main>
 
-  <footer class="bg-white py-16 text-center border-t border-gray-50">
-    <div class="flex items-center justify-center gap-4 mb-6 opacity-30">
-      <div class="w-12 h-[1px] bg-gray-400"></div>
-      <span class="serif-title text-xs tracking-widest">Cining Temple</span>
-      <div class="w-12 h-[1px] bg-gray-400"></div>
-    </div>
-    <p class="text-gray-400 text-xs tracking-[0.3em]">
-      &copy; 2026 南海慈寧宮 ‧ 慈雲普覆 寧境安心
-    </p>
-  </footer>
-
   <script>
     const handleReveal = () => {
-      const reveals = document.querySelectorAll('.reveal');
-      reveals.forEach(reveal => {
-        const windowHeight = window.innerHeight;
-        const revealTop = reveal.getBoundingClientRect().top;
-        if (revealTop < windowHeight - 50) {
-          reveal.classList.add('active');
-        }
+      document.querySelectorAll('.reveal').forEach(reveal => {
+        if (reveal.getBoundingClientRect().top < window.innerHeight - 50) reveal.classList.add('active');
       });
     };
     window.addEventListener('scroll', handleReveal);
