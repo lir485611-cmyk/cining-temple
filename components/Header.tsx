@@ -1,18 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, User, Menu, X, Landmark, UserCheck } from 'lucide-react';
-import { Member } from '../types';
+import { Menu, X, Landmark } from 'lucide-react';
 
 interface HeaderProps {
-  cartCount: number;
-  onCartClick: () => void;
-  onUserClick: () => void;
   onHomeClick: () => void;
   onIntroClick: () => void;
-  user: Partial<Member> | null;
+  onGodsClick: () => void;
+  onPilgrimageClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onUserClick, onHomeClick, onIntroClick, user }) => {
+const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick, onPilgrimageClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -24,87 +20,84 @@ const Header: React.FC<HeaderProps> = ({ cartCount, onCartClick, onUserClick, on
 
   const navLinks = [
     { name: '宮廟沿革', action: onIntroClick },
-    { name: '祀奉神尊', action: onHomeClick },
-    { name: '法務報名', action: onHomeClick },
-    { name: '朝聖資訊', action: onHomeClick },
+    { name: '祀奉神尊', action: onGodsClick },
+    { name: '朝聖資訊', action: onPilgrimageClick },
   ];
+
+  const handleNavClick = (action: () => void) => {
+    action();
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-500 ${
-        isScrolled || isMobileMenuOpen ? 'bg-[#8B0000] py-3 border-b border-[#C5A009]/30 shadow-2xl' : 'bg-transparent py-6'
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+        isScrolled || isMobileMenuOpen ? 'bg-white py-3 border-b border-gray-100 shadow-xl' : 'bg-transparent py-6'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Mobile Menu Button */}
         <button 
-          className="lg:hidden text-[#C5A009] p-2"
+          className={`lg:hidden p-2 transition-colors ${isScrolled || isMobileMenuOpen ? 'text-[#8B0000]' : 'text-white md:text-[#3E2723]'}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
         </button>
 
         {/* Desktop Nav - Left */}
-        <nav className={`hidden lg:flex items-center space-x-8 text-[12px] font-bold tracking-[0.3em] uppercase transition-colors ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>
+        <nav className="hidden lg:flex items-center space-x-12 text-[15px] font-black tracking-[0.3em] uppercase text-[#3E2723]">
           {navLinks.slice(0, 2).map((link) => (
-            <button key={link.name} onClick={link.action} className="hover:text-[#C5A009] transition-colors">{link.name}</button>
+            <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#8B0000] transition-colors relative group">
+              {link.name}
+              <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#8B0000] transition-all group-hover:w-full"></span>
+            </button>
           ))}
         </nav>
 
         {/* Logo */}
         <button 
-          onClick={() => { onHomeClick(); setIsMobileMenuOpen(false); }}
+          onClick={() => handleNavClick(onHomeClick)}
           className="flex flex-col items-center transition-transform hover:scale-105"
         >
-          <div className="flex items-center gap-2">
-            <Landmark className={`w-6 h-6 ${isScrolled || isMobileMenuOpen ? 'text-[#C5A009]' : 'text-[#8B0000]'}`} />
-            <h1 className={`text-xl md:text-2xl font-black tracking-[0.3em] serif-title ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>南海慈寧宮</h1>
+          <div className="flex items-center gap-3">
+            <Landmark className="w-6 h-6 text-[#8B0000]" />
+            <h1 className="text-xl md:text-3xl font-black tracking-[0.4em] serif-title text-[#3E2723]">南海慈寧宮</h1>
           </div>
-          <span className={`text-[8px] tracking-[0.5em] opacity-80 uppercase font-bold ${isScrolled || isMobileMenuOpen ? 'text-[#C5A009]' : 'text-[#8B0000]'}`}>Cining Temple</span>
+          <span className="text-[10px] tracking-[0.6em] opacity-80 uppercase font-bold text-[#8B0000]">Cining Temple</span>
         </button>
 
-        {/* Desktop Nav - Right & Icons */}
-        <div className="flex items-center space-x-4 md:space-x-8">
-          <nav className={`hidden lg:flex items-center space-x-8 text-[12px] font-bold tracking-[0.3em] uppercase transition-colors ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>
+        {/* Desktop Nav - Right */}
+        <div className="flex items-center">
+          <nav className="hidden lg:flex items-center text-[15px] font-black tracking-[0.3em] uppercase text-[#3E2723]">
             {navLinks.slice(2).map((link) => (
-              <button key={link.name} onClick={link.action} className="hover:text-[#C5A009] transition-colors">{link.name}</button>
+              <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#8B0000] transition-colors relative group">
+                {link.name}
+                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#8B0000] transition-all group-hover:w-full"></span>
+              </button>
             ))}
           </nav>
-
-          <div className={`flex items-center space-x-4 ${isScrolled || isMobileMenuOpen ? 'text-white' : 'text-[#3E2723]'}`}>
-            <button onClick={onUserClick} className="hover:text-[#C5A009] transition-colors">
-              {user ? <UserCheck className="w-5 h-5 text-[#C5A009]" /> : <User className="w-5 h-5" />}
-            </button>
-            <button onClick={onCartClick} className="relative group">
-              <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#8B0000] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center border border-[#C5A009] font-bold">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-          </div>
+          <div className="w-10 lg:hidden"></div>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-[#8B0000] border-b border-[#C5A009]/30 fade-in">
-          <nav className="flex flex-col p-8 space-y-6 text-center text-[16px] tracking-[0.4em] font-bold text-white uppercase">
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 h-screen shadow-2xl animate-in fade-in slide-in-from-top duration-300">
+          <nav className="flex flex-col p-12 space-y-4 text-center">
             {navLinks.map((link) => (
               <button 
                 key={link.name} 
-                onClick={() => { link.action(); setIsMobileMenuOpen(false); }}
-                className="py-4 border-b border-white/10 active:text-[#C5A009]"
+                onClick={() => handleNavClick(link.action)}
+                className="py-6 border-b border-gray-50 text-[#8B0000] font-black text-2xl tracking-[0.4em] uppercase active:text-[#C5A009]"
               >
                 {link.name}
               </button>
             ))}
-            {user && (
-              <div className="pt-4 text-[#C5A009] text-sm">
-                歡迎，{user.full_name} 大德
-              </div>
-            )}
+            <div className="pt-16 flex flex-col items-center gap-6 opacity-30">
+              <Landmark className="w-10 h-10 text-[#8B0000]" />
+              <p className="text-[12px] tracking-[0.6em] font-black serif-title text-[#8B0000]">慈雲普覆 ‧ 寧境安心</p>
+            </div>
           </nav>
         </div>
       )}

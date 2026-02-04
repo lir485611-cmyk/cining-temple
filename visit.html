@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>參拜動線 | 南海慈寧宮</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --temple-red: #8B0000;
+      --temple-gold: #C5A009;
+      --temple-bg: #FAF9F6;
+      --temple-text: #3E2723;
+    }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: var(--temple-bg);
+      color: var(--temple-text);
+      line-height: 1.8;
+    }
+    .serif-title { font-family: 'Noto Serif TC', serif; }
+    .ornament-border {
+      border: 1px solid rgba(139, 0, 0, 0.1);
+      position: relative;
+    }
+    .ornament-border::before {
+      content: ""; position: absolute; top: -2px; left: -2px; width: 14px; height: 14px;
+      border-top: 2px solid var(--temple-red); border-left: 2px solid var(--temple-red);
+    }
+    .ornament-border::after {
+      content: ""; position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
+      border-bottom: 2px solid var(--temple-red); border-right: 2px solid var(--temple-red);
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <header class="py-6 bg-white border-b border-gray-100 fixed top-0 left-0 right-0 z-50">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-[#8B0000] flex items-center justify-center text-white text-xl font-black serif-title">慈</div>
+        <h1 class="text-xl font-black tracking-[0.2em] serif-title text-[#8B0000]">南海慈寧宮</h1>
+      </div>
+      <a href="./index.html" class="text-xs font-bold tracking-widest text-gray-400 hover:text-[#8B0000]">返回首頁</a>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 py-32 max-w-4xl">
+    <div class="text-center mb-20">
+      <h2 class="text-4xl md:text-5xl font-black text-[#8B0000] serif-title tracking-widest mb-6">清馨供養 ‧ 循香覓跡</h2>
+      <div class="w-20 h-1 bg-[#C5A009] mx-auto"></div>
+    </div>
+
+    <div class="space-y-12">
+      <div class="bg-white ornament-border p-8 md:p-12 shadow-sm flex gap-8 items-start">
+        <div class="w-12 h-12 bg-[#8B0000] text-white flex items-center justify-center font-black text-2xl flex-shrink-0 shadow-[4px_4px_0px_#C5A009]">1</div>
+        <div>
+          <h3 class="text-2xl font-black text-[#8B0000] serif-title mb-4">本宮主爐</h3>
+          <p class="text-xl font-bold text-[#C5A009] mb-4 tracking-wider">天上聖母 ‧ 觀世音菩薩 ‧ 武財神</p>
+          <p class="text-gray-600">信眾持三炷香，於主爐前誠心稟報姓名、出生年月日、現居地址及祈求事由。三神尊同受香火，護佑萬民平安順遂。</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+        <div class="bg-gray-50 p-10 text-center">
+          <Clock className="w-8 h-8 mx-auto mb-4 text-[#8B0000]" />
+          <h4 className="font-black text-[#8B0000] mb-2 serif-title">開放時間</h4>
+          <p className="text-lg">每日 09:00 - 18:00</p>
+        </div>
+        <div class="bg-gray-50 p-10 text-center">
+          <MapPin className="w-8 h-8 mx-auto mb-4 text-[#8B0000]" />
+          <h4 class="font-black text-[#8B0000] mb-2 serif-title">宮廟地址</h4>
+          <p class="text-lg">高雄市鼓山區民康街216號</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-24 text-center">
+       <a href="./index.html" class="inline-block border-2 border-[#8B0000] text-[#8B0000] px-12 py-4 font-black hover:bg-[#8B0000] hover:text-white transition-all">回首頁</a>
+    </div>
+  </main>
+</body>
+</html>
