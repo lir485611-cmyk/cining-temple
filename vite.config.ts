@@ -8,12 +8,13 @@ const __dirname = dirname(__filename);
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // 關鍵：確保 GitHub Pages 上的相對路徑正確
+  base: './', // 確保在各平台上相對路徑正確
   server: {
     port: 3000,
   },
   build: {
     outDir: 'dist',
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),

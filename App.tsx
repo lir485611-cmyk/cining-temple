@@ -13,7 +13,7 @@ export const getDriveImageUrl = (id: string) => {
 };
 
 const ROUTE_MAP_ID = '1ZS5SILdpJXxlNxpCXpLk963SBGuv_1sn';
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw-OBnT-XiO0I0_4giYSHBNv13e_rbyeV014fpdK18AQKfHk_7l42xbug_4U8Qnq_Jt/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzD0vjRwTMkcknbW1M_9MJyjtB8njamUiCEloUqj7vqkU3NotML2pstdruYCd7UgGuq/exec'; 
 
 const LATEST_NEWS = [
   {
