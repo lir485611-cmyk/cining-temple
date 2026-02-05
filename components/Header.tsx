@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Landmark } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   onHomeClick: () => void;
@@ -7,6 +7,8 @@ interface HeaderProps {
   onGodsClick: () => void;
   onPilgrimageClick: () => void;
 }
+
+const LOGO_URL = 'https://lh3.googleusercontent.com/d/1Um9FSgxjlrOvIWgvYmOLJI5jrGBNDoWw';
 
 const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick, onPilgrimageClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,18 +41,18 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Mobile Menu Button */}
         <button 
-          className={`lg:hidden p-2 transition-colors ${isScrolled || isMobileMenuOpen ? 'text-[#8B0000]' : 'text-white md:text-[#3E2723]'}`}
+          className={`lg:hidden p-2 transition-colors ${isScrolled || isMobileMenuOpen ? 'text-[#B22222]' : 'text-white md:text-[#333333]'}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
         </button>
 
         {/* Desktop Nav - Left */}
-        <nav className="hidden lg:flex items-center space-x-12 text-[15px] font-black tracking-[0.3em] uppercase text-[#3E2723]">
+        <nav className="hidden lg:flex items-center space-x-12 text-[15px] font-black tracking-[0.3em] uppercase text-[#333333]">
           {navLinks.slice(0, 2).map((link) => (
-            <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#8B0000] transition-colors relative group">
+            <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#B22222] transition-colors relative group">
               {link.name}
-              <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#8B0000] transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
             </button>
           ))}
         </nav>
@@ -61,19 +63,19 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
           className="flex flex-col items-center transition-transform hover:scale-105"
         >
           <div className="flex items-center gap-3">
-            <Landmark className="w-6 h-6 text-[#8B0000]" />
-            <h1 className="text-xl md:text-3xl font-black tracking-[0.4em] serif-title text-[#3E2723]">南海慈寧宮</h1>
+            <img src={LOGO_URL} alt="南海慈寧宮 LOGO" className="w-10 h-10 object-contain" />
+            <h1 className="text-xl md:text-3xl font-black tracking-[0.4em] serif-title text-[#333333]">南海慈寧宮</h1>
           </div>
-          <span className="text-[10px] tracking-[0.6em] opacity-80 uppercase font-bold text-[#8B0000]">Cining Temple</span>
+          <span className="text-[10px] tracking-[0.6em] opacity-80 uppercase font-bold text-[#B22222]">Cining Temple</span>
         </button>
 
         {/* Desktop Nav - Right */}
         <div className="flex items-center">
-          <nav className="hidden lg:flex items-center text-[15px] font-black tracking-[0.3em] uppercase text-[#3E2723]">
+          <nav className="hidden lg:flex items-center text-[15px] font-black tracking-[0.3em] uppercase text-[#333333]">
             {navLinks.slice(2).map((link) => (
-              <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#8B0000] transition-colors relative group">
+              <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#B22222] transition-colors relative group">
                 {link.name}
-                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#8B0000] transition-all group-hover:w-full"></span>
+                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
               </button>
             ))}
           </nav>
@@ -89,14 +91,14 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
               <button 
                 key={link.name} 
                 onClick={() => handleNavClick(link.action)}
-                className="py-6 border-b border-gray-50 text-[#8B0000] font-black text-2xl tracking-[0.4em] uppercase active:text-[#C5A009]"
+                className="py-6 border-b border-gray-50 text-[#B22222] font-black text-2xl tracking-[0.4em] uppercase active:text-[#C5A009]"
               >
                 {link.name}
               </button>
             ))}
-            <div className="pt-16 flex flex-col items-center gap-6 opacity-30">
-              <Landmark className="w-10 h-10 text-[#8B0000]" />
-              <p className="text-[12px] tracking-[0.6em] font-black serif-title text-[#8B0000]">慈雲普覆 ‧ 寧境安心</p>
+            <div className="pt-16 flex flex-col items-center gap-6">
+              <img src={LOGO_URL} alt="南海慈寧宮 LOGO" className="w-16 h-16 object-contain" />
+              <p className="text-[12px] tracking-[0.6em] font-black serif-title text-[#B22222]">慈雲普覆 ‧ 寧境安心</p>
             </div>
           </nav>
         </div>

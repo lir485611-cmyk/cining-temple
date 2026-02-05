@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -27,13 +26,30 @@
     .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.2, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
     .title-badge { background-color: var(--temple-red); color: #FFFFFF; padding: 0.6rem 2rem; display: inline-block; font-weight: 900; letter-spacing: 0.3em; box-shadow: 3px 3px 0px var(--temple-gold); margin-bottom: 1.5rem; }
+    
+    .ornament-border {
+      border: 1px solid rgba(139, 0, 0, 0.1);
+      position: relative;
+    }
+    .ornament-border::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px; width: 14px; height: 14px;
+      border-top: 2px solid var(--temple-red); border-left: 2px solid var(--temple-red);
+    }
+    .ornament-border::after {
+      content: "";
+      position: absolute;
+      bottom: -2px; right: -2px; width: 14px; height: 14px;
+      border-bottom: 2px solid var(--temple-red); border-right: 2px solid var(--temple-red);
+    }
   </style>
 </head>
 <body class="manji-overlay">
   <header class="py-6 bg-white/95 backdrop-blur-md border-b border-gray-100 fixed top-0 left-0 right-0 z-50">
     <div class="container mx-auto px-6 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-[#B22222] flex items-center justify-center text-white text-xl font-black serif-title">慈</div>
+        <img src="https://lh3.googleusercontent.com/d/1Um9FSgxjlrOvIWgvYmOLJI5jrGBNDoWw" alt="LOGO" class="w-10 h-10 object-contain">
         <h1 class="text-xl font-black tracking-[0.2em] serif-title text-[#B22222]">南海慈寧宮</h1>
       </div>
       <a href="./index.html" class="text-xs font-bold tracking-widest text-gray-400 hover:text-[#B22222]">返回首頁</a>
@@ -52,22 +68,22 @@
         <div>
           <div class="title-badge serif-title text-xl">天上聖母</div>
           <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">慈航普渡 ‧ 鎮殿主神</h3>
-          <p class="text-[#333333] leading-relaxed text-lg">天上聖母（媽祖）為南海慈寧宮之主神，以慈悲大愛護佑眾生。</p>
+          <p class="text-[#333333] leading-relaxed text-lg">守護海疆，保佑平安。媽祖娘娘以慈心護佑蒼生，化解世間災難，帶領信眾邁向和諧與平靜。</p>
         </div>
-        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
-           <img src="https://lh3.googleusercontent.com/d/1eCe_3ffYdKIe1-eEXEQdnL9ojsUqOQeo" alt="天上聖母" class="max-h-full object-contain">
+        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner overflow-hidden ornament-border">
+           <img src="https://lh3.googleusercontent.com/d/1xlLX_Qal-hAl8fCNFMw0clHkuPnvYIjK" alt="天上聖母" class="max-h-full object-contain">
         </div>
       </section>
 
       <!-- 觀世音菩薩 -->
       <section class="reveal grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="order-2 md:order-1 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
-           <img src="https://lh3.googleusercontent.com/d/1VVFGy1FdpVHWK-nG45D7dGcttBZbXgCG" alt="觀世音菩薩" class="max-h-full object-contain">
+        <div class="order-2 md:order-1 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner overflow-hidden ornament-border">
+           <img src="https://lh3.googleusercontent.com/d/1GjOjnXQSe85As0muuHb5tJG2q5JENJ3h" alt="觀世音菩薩" class="max-h-full object-contain">
         </div>
         <div class="order-1 md:order-2">
           <div class="title-badge serif-title text-xl">觀世音菩薩</div>
-          <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">慈悲示現 ‧ 靈感守護</h3>
-          <p class="text-[#333333] leading-relaxed text-lg">菩薩具足大威神力，聽聞眾生疾苦，引領迷途心靈找回正向力量。</p>
+          <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">尋聲救苦 ‧ 慈悲相應</h3>
+          <p class="text-[#333333] leading-relaxed text-lg">觀照世間疾苦之聲。尋聲而至，普渡眾生於無量劫。一念虔誠，慈悲相應；萬丈佛光，指引歸途，願以此聖光，照亮人間前路，撫慰每一顆不安的心靈。</p>
         </div>
       </section>
 
@@ -76,30 +92,28 @@
         <div>
           <div class="title-badge serif-title text-xl">武財神</div>
           <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">招財進寶 ‧ 事業亨通</h3>
-          <p class="text-[#333333] leading-relaxed text-lg">威震八方的武財神，主掌天下財源，為信眾開運引財。</p>
+          <p class="text-[#333333] leading-relaxed text-lg">主掌天下財源，威震八方。為勤勉努力之信眾開啟財路，保佑事業蒸蒸日上，家運亨通。</p>
         </div>
-        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
-           <div class="w-48 h-48 border-8 border-[#C5A009] rounded-full flex items-center justify-center">
-              <span class="text-[#C5A009] text-8xl font-black serif-title">財</span>
-           </div>
+        <div class="bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner overflow-hidden ornament-border">
+           <img src="https://lh3.googleusercontent.com/d/1v44HK02w8ItKawLw347-9aQDr7Sxv8j9" alt="武財神" class="max-h-full object-contain">
         </div>
       </section>
 
       <!-- 虎爺 -->
       <section class="reveal grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="order-2 md:order-1 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner">
-           <img src="https://lh3.googleusercontent.com/d/1-8qfVQXgkSNi__jJFddNPEtWinNaGgAP" alt="虎爺大將軍" class="max-h-full object-contain">
+        <div class="order-2 md:order-1 bg-gray-50 aspect-square flex items-center justify-center p-8 border border-gray-100 shadow-inner overflow-hidden ornament-border">
+           <img src="https://lh3.googleusercontent.com/d/1-8qfVQXgkSNi__jJFddPPEtWinNaGgAP" alt="虎爺大將軍" class="max-h-full object-contain">
         </div>
         <div class="order-1 md:order-2">
           <div class="title-badge serif-title text-xl">虎爺大將軍</div>
           <h3 class="text-2xl font-black text-[#B22222] mb-6 tracking-widest">驅邪鎮宅 ‧ 守護財庫</h3>
-          <p class="text-[#333333] leading-relaxed text-lg">鎮守神龕之下，護佑孩童，並具備強大的驅邪與招財之力。</p>
+          <p class="text-[#333333] leading-relaxed text-lg">鎮守神龕之下的守護神。具備強大辟邪與招財靈力，同時守護幼童平安長大，避開是非小人。</p>
         </div>
       </section>
     </div>
 
     <div class="mt-40 text-center pb-20 reveal">
-      <a href="./index.html" class="inline-block border-2 border-[#B22222] text-[#B22222] px-12 py-4 font-black">返回首頁</a>
+      <a href="./index.html" class="inline-block border-2 border-[#B22222] text-[#B22222] px-12 py-4 font-black hover:bg-[#B22222] hover:text-white transition-all">返回首頁 ‧ 感受神恩</a>
     </div>
   </main>
 

@@ -1,6 +1,7 @@
-
 import React from 'react';
-import { Facebook, Landmark, MessageCircle, MapPin, Phone } from 'lucide-react';
+import { Facebook, MessageCircle, MapPin, Phone } from 'lucide-react';
+
+const LOGO_URL = 'https://lh3.googleusercontent.com/d/1V_pOkbobPmP53aSx5A27nbQc78wlsyUV';
 
 const Footer: React.FC = () => {
   const facebookUrl = "https://www.facebook.com/profile.php?id=100088841858344&locale=zh_TW";
@@ -10,12 +11,16 @@ const Footer: React.FC = () => {
   const phoneNumber = "0982243847";
 
   return (
-    <footer className="bg-[#8B0000] border-t border-[#C5A009]/20 pt-12 pb-8">
+    <footer className="bg-[#B22222] border-t border-[#C5A009]/20 pt-12 pb-8">
       <div className="container mx-auto px-6">
         <div className="flex flex-col items-center">
           {/* Logo & Slogan */}
-          <div className="flex items-center gap-3 mb-8">
-            <Landmark className="w-6 h-6 text-[#C5A009]" />
+          <div className="flex items-center gap-4 mb-8">
+            <img 
+              src={LOGO_URL} 
+              alt="南海慈寧宮 LOGO" 
+              className="w-16 h-16 md:w-20 md:h-20 object-contain" 
+            />
             <h3 className="text-2xl font-black text-white tracking-widest serif-title">南海慈寧宮</h3>
           </div>
           
