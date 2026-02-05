@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
-import { X, Calendar, MessageCircle, Flower2, Map as MapIcon, Clock, MapPin, Send, CheckCircle2, ChevronRight } from 'lucide-react';
+import { X, Calendar, MessageCircle, Flower2, Map as MapIcon, Clock, MapPin, Send, CheckCircle2, ChevronRight, Maximize2 } from 'lucide-react';
 
 type View = 'Home' | 'About' | 'Gods' | 'Pilgrimage';
 
@@ -12,10 +12,10 @@ export const getDriveImageUrl = (id: string) => {
   return `https://lh3.googleusercontent.com/d/${id}`;
 };
 
-// 修正後的 Google Drive 路線地圖連結
+// 徒步路線配置
 const ROUTE_MAP_ID = '1e2cuiEfVfpsvHCaBZ6KoU0Doj5noQh-p';
-const ROUTE_MAP_URL = `https://drive.google.com/file/d/${ROUTE_MAP_ID}/view?usp=sharing`;
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycby5uDhkCdOUDrm0_bo5KcG6IHGJeVmTYxy_5K1KZ75EzyPTIInsziHX2LI1gOCdMnbz/exec'; 
+const ROUTE_PREVIEW_URL = `https://drive.google.com/file/d/${ROUTE_MAP_ID}/preview`;
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwrvLdWiHSTvGmf-7lHdmi0JNLE18ozDtq7msjfub3ap_He3zq7F4NMkc3COB_aInC4/exec'; 
 const LINE_CONTACT_URL = 'https://lin.ee/VqVsX38';
 
 const LATEST_NEWS = [
@@ -27,7 +27,7 @@ const LATEST_NEWS = [
     type: '最新活動',
     actions: [
       { label: 'LINE 諮詢', link: 'https://lin.ee/22Yqo9fe', type: 'primary', icon: 'message' },
-      { label: '徒步路線', link: ROUTE_MAP_URL, type: 'secondary', icon: 'map', isExternal: true }
+      { label: '徒步路線', type: 'secondary', icon: 'map', isRouteTrigger: true }
     ]
   },
   {
@@ -84,6 +84,7 @@ const DIVINE_STATUES = [
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('Home');
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isRouteOpen, setIsRouteOpen] = useState(false); // 徒步路線燈箱狀態
   const [isSuccess, setIsSuccess] = useState(false);
   const [activeStatueIndex, setActiveStatueIndex] = useState(0);
   const [formType, setFormType] = useState('');
@@ -179,6 +180,7 @@ const App: React.FC = () => {
               key={idx}
               onClick={() => {
                 if (act.isFormTrigger) openForm(news.type || '', news.items || []);
+                else if (act.isRouteTrigger) setIsRouteOpen(true);
                 else if (act.link) window.open(act.link, '_blank');
               }}
               className={`${(isMain && news.actions.length > 1) ? 'md:w-1/2' : 'w-full'} px-6 py-4 text-xs md:text-sm font-black tracking-widest flex items-center justify-center gap-2 transition-all shadow-md ${
@@ -328,14 +330,17 @@ const App: React.FC = () => {
                    <div className="flex-1 space-y-6">
                       <h4 className="text-3xl font-black text-[#B22222] serif-title tracking-widest">丙午年 ‧ 徒步環島路線</h4>
                       <p className="text-gray-600 leading-relaxed text-lg">年度最殊勝的修行活動。跟隨聖母腳步巡禮全台，目前已規劃完整路線手冊，歡迎各位大德先行參閱，共襄盛舉。</p>
-                      <button onClick={() => window.open(ROUTE_MAP_URL, '_blank')} className="bg-[#B22222] text-white px-10 py-5 font-black tracking-widest flex items-center gap-3 hover:bg-[#C5A009] transition-all shadow-xl">
+                      <button onClick={() => setIsRouteOpen(true)} className="bg-[#B22222] text-white px-10 py-5 font-black tracking-widest flex items-center gap-3 hover:bg-[#C5A009] transition-all shadow-xl">
                         <MapIcon className="w-5 h-5" />
                         查看詳細徒步路線
                         <ChevronRight className="w-4 h-4" />
                       </button>
                    </div>
-                   <div className="w-full md:w-1/3 aspect-[4/5] bg-white border border-gray-200 shadow-xl p-4 rotate-2 hover:rotate-0 transition-transform cursor-pointer overflow-hidden" onClick={() => window.open(ROUTE_MAP_URL, '_blank')}>
-                      <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-center p-6 border-2 border-dashed border-gray-300">
+                   <div className="w-full md:w-1/3 aspect-[4/5] bg-white border border-gray-200 shadow-xl p-4 rotate-2 hover:rotate-0 transition-transform cursor-pointer group overflow-hidden" onClick={() => setIsRouteOpen(true)}>
+                      <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-center p-6 border-2 border-dashed border-gray-300 relative">
+                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+                            <Maximize2 className="w-8 h-8 opacity-0 group-hover:opacity-100 text-[#B22222] transition-opacity" />
+                         </div>
                          <div>
                             <MapIcon className="w-12 h-12 mx-auto mb-4 opacity-20" />
                             <p className="text-sm font-bold tracking-widest opacity-50 uppercase">Route Map Manual</p>
@@ -348,6 +353,36 @@ const App: React.FC = () => {
           </div>
         )}
       </main>
+
+      {/* 徒步路線燈箱 */}
+      {isRouteOpen && (
+        <div className="fixed inset-0 z-[500] flex flex-col bg-black/95 animate-in fade-in duration-300">
+           <div className="bg-[#B22222] text-white p-4 flex justify-between items-center shadow-2xl relative z-10">
+              <div className="flex items-center gap-3">
+                 <MapIcon className="w-6 h-6 text-[#C5A009]" />
+                 <h3 className="text-lg md:text-xl font-black serif-title tracking-widest">丙午年徒步環島路線圖</h3>
+              </div>
+              <button onClick={() => setIsRouteOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                 <X className="w-8 h-8" />
+              </button>
+           </div>
+           <div className="flex-1 w-full bg-white relative overflow-hidden">
+              <iframe 
+                 src={ROUTE_PREVIEW_URL}
+                 className="absolute inset-0 w-full h-full border-none"
+                 allow="autoplay"
+                 title="徒步路線圖預覽"
+              ></iframe>
+              {/* 加載提示 */}
+              <div className="absolute inset-0 -z-10 flex items-center justify-center bg-gray-100 text-[#B22222] font-black tracking-widest text-sm">
+                 載入地圖手冊中...
+              </div>
+           </div>
+           <div className="bg-white p-3 text-center border-t border-gray-200">
+              <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase">南海慈寧宮 ‧ 丙午年年度盛事</p>
+           </div>
+        </div>
+      )}
 
       {isFormOpen && (
         <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-300 backdrop-blur-sm">
@@ -418,7 +453,7 @@ const App: React.FC = () => {
                     )}
                     <div className="space-y-2">
                       <label className="text-xs font-black text-[#B22222] uppercase tracking-widest">其他說明 (事由)</label>
-                      <textarea placeholder="請簡述您的需求或祈願事項" className="w-full bg-white border border-gray-200 p-4 outline-none focus:ring-1 focus:ring-[#B22222] h-32"
+                      <textarea placeholder="請簡述您的需求過祈願事項" className="w-full bg-white border border-gray-200 p-4 outline-none focus:ring-1 focus:ring-[#B22222] h-32"
                         value={formData.reason} onChange={(e) => setFormData({...formData, reason: e.target.value})} />
                     </div>
                     <div className="pt-4">
