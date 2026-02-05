@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
-import { X, Calendar, MessageCircle, Flower2, Map as MapIcon, Clock, MapPin, Send, CheckCircle2 } from 'lucide-react';
+import { X, Calendar, MessageCircle, Flower2, Map as MapIcon, Clock, MapPin, Send, CheckCircle2, ChevronRight } from 'lucide-react';
 
 type View = 'Home' | 'About' | 'Gods' | 'Pilgrimage';
 
@@ -11,8 +12,10 @@ export const getDriveImageUrl = (id: string) => {
   return `https://lh3.googleusercontent.com/d/${id}`;
 };
 
+// 修正後的 Google Drive 路線地圖連結
 const ROUTE_MAP_ID = '1e2cuiEfVfpsvHCaBZ6KoU0Doj5noQh-p';
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw9ecTvmXt5zuWSx99yuxkvmpvlBou8fzFVzcIyToxCS9CNPG9pB5B4wg1FxqoWRo-y/exec'; 
+const ROUTE_MAP_URL = `https://drive.google.com/file/d/${ROUTE_MAP_ID}/view?usp=sharing`;
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycby5uDhkCdOUDrm0_bo5KcG6IHGJeVmTYxy_5K1KZ75EzyPTIInsziHX2LI1gOCdMnbz/exec'; 
 const LINE_CONTACT_URL = 'https://lin.ee/VqVsX38';
 
 const LATEST_NEWS = [
@@ -24,7 +27,7 @@ const LATEST_NEWS = [
     type: '最新活動',
     actions: [
       { label: 'LINE 諮詢', link: 'https://lin.ee/22Yqo9fe', type: 'primary', icon: 'message' },
-      { label: '徒步路線', link: '#', type: 'secondary', icon: 'map', isMapTrigger: true }
+      { label: '徒步路線', link: ROUTE_MAP_URL, type: 'secondary', icon: 'map', isExternal: true }
     ]
   },
   {
@@ -80,7 +83,6 @@ const DIVINE_STATUES = [
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('Home');
-  const [isMapOpen, setIsMapOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [activeStatueIndex, setActiveStatueIndex] = useState(0);
@@ -176,8 +178,7 @@ const App: React.FC = () => {
             <button
               key={idx}
               onClick={() => {
-                if (act.isMapTrigger) setIsMapOpen(true);
-                else if (act.isFormTrigger) openForm(news.type || '', news.items || []);
+                if (act.isFormTrigger) openForm(news.type || '', news.items || []);
                 else if (act.link) window.open(act.link, '_blank');
               }}
               className={`${(isMain && news.actions.length > 1) ? 'md:w-1/2' : 'w-full'} px-6 py-4 text-xs md:text-sm font-black tracking-widest flex items-center justify-center gap-2 transition-all shadow-md ${
@@ -212,15 +213,10 @@ const App: React.FC = () => {
             <section className="relative z-40 px-4 pt-24 md:pt-40 bg-white">
               <div className="container mx-auto max-w-6xl">
                 <SectionTitle className="mb-12">最新消息</SectionTitle>
-                
-                {/* 1+2 佈局結構 */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-                  {/* 第一排：環島活動 (全寬) */}
                   <div className="md:col-span-2">
                     <NewsCard news={LATEST_NEWS[0]} isMain={true} />
                   </div>
-                  
-                  {/* 第二排：祈福燈 & 問事 (並排) */}
                   <div className="md:col-span-1">
                     <NewsCard news={LATEST_NEWS[1]} />
                   </div>
@@ -325,6 +321,28 @@ const App: React.FC = () => {
                       <p className="text-xl font-black serif-title text-[#333333]">高雄鼓山區民康街216號</p>
                     </div>
                   </div>
+                </div>
+
+                {/* 徒步路線內容 */}
+                <div className="bg-gray-50 p-8 md:p-16 border border-gray-100 shadow-inner flex flex-col md:flex-row items-center gap-12 ornament-border">
+                   <div className="flex-1 space-y-6">
+                      <h4 className="text-3xl font-black text-[#B22222] serif-title tracking-widest">丙午年 ‧ 徒步環島路線</h4>
+                      <p className="text-gray-600 leading-relaxed text-lg">年度最殊勝的修行活動。跟隨聖母腳步巡禮全台，目前已規劃完整路線手冊，歡迎各位大德先行參閱，共襄盛舉。</p>
+                      <button onClick={() => window.open(ROUTE_MAP_URL, '_blank')} className="bg-[#B22222] text-white px-10 py-5 font-black tracking-widest flex items-center gap-3 hover:bg-[#C5A009] transition-all shadow-xl">
+                        <MapIcon className="w-5 h-5" />
+                        查看詳細徒步路線
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                   </div>
+                   <div className="w-full md:w-1/3 aspect-[4/5] bg-white border border-gray-200 shadow-xl p-4 rotate-2 hover:rotate-0 transition-transform cursor-pointer overflow-hidden" onClick={() => window.open(ROUTE_MAP_URL, '_blank')}>
+                      <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-center p-6 border-2 border-dashed border-gray-300">
+                         <div>
+                            <MapIcon className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                            <p className="text-sm font-bold tracking-widest opacity-50 uppercase">Route Map Manual</p>
+                            <p className="text-xs mt-2 opacity-30">點擊開啟手冊</p>
+                         </div>
+                      </div>
+                   </div>
                 </div>
              </div>
           </div>
@@ -432,17 +450,6 @@ const App: React.FC = () => {
                 </div>
               )}
            </div>
-        </div>
-      )}
-
-      {isMapOpen && (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/90 p-4 md:p-12 animate-in fade-in duration-300 backdrop-blur-md">
-          <button onClick={() => setIsMapOpen(false)} className="absolute top-6 right-6 text-white/60 hover:text-white transition-all z-[310] p-3 bg-white/10 rounded-full">
-            <X className="w-10 h-10" />
-          </button>
-          <div className="w-full h-full max-w-5xl bg-white shadow-2xl rounded-lg overflow-hidden relative">
-             <iframe src={`https://drive.google.com/file/d/${ROUTE_MAP_ID}/preview`} className="w-full h-full border-none" allow="autoplay" title="徒步路線手冊" />
-          </div>
         </div>
       )}
 
