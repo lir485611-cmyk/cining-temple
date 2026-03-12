@@ -37,20 +37,6 @@
       border-bottom: 2px solid var(--temple-red); border-right: 2px solid var(--temple-red);
     }
 
-    .sutra-content {
-      line-height: 2;
-      font-size: 1.125rem;
-      text-align: justify;
-    }
-
-    .title-block {
-      background-color: var(--temple-red);
-      color: white;
-      padding: 0.5rem 1.5rem;
-      display: inline-block;
-      margin-bottom: 2rem;
-    }
-
     .reveal {
       opacity: 0;
       transform: translateY(30px);
@@ -81,124 +67,30 @@
       <p class="text-gray-400 tracking-[0.5em] uppercase text-sm">Stories & Sutras</p>
     </div>
 
-    <div class="space-y-32">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
       <!-- 心經 -->
-      <section id="heart" class="reveal">
-        <div class="title-block">
-          <h3 class="text-2xl font-black serif-title tracking-widest">般若波羅蜜多心經</h3>
-        </div>
-        <div class="bg-white ornament-border p-8 md:p-16 shadow-sm">
-          <div class="mb-12 overflow-hidden ornament-border">
-            <img src="https://lh3.googleusercontent.com/d/1ESjeUuG6HjeTEg4U7pILkTXgR1180vu9" alt="心經意境圖" class="w-full h-auto object-cover transition-all duration-1000">
+      <div class="reveal">
+        <div class="bg-white ornament-border p-8 shadow-sm hover:shadow-xl transition-all duration-500 group h-full flex flex-col">
+          <div class="mb-8 overflow-hidden ornament-border aspect-video">
+            <img src="https://lh3.googleusercontent.com/d/1ESjeUuG6HjeTEg4U7pILkTXgR1180vu9" alt="心經" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
           </div>
-          <div class="sutra-content serif-title space-y-8">
-            <p class="font-bold text-xl text-[#B22222]">你是否曾經好奇，為什麼到廟裡參拜時，總能聽到那段熟悉又安定的誦經聲？為什麼短短 260 個字的《般若波羅蜜多心經》，能夠流傳千古，成為無數人心中最強大的護身符？</p>
-            <p>這不僅僅是一部經典，它背後，還藏著一段關於慈悲、考驗與無上智慧的故事。</p>
-            
-            <h4 class="text-xl font-black text-[#B22222] border-l-4 border-[#B22222] pl-4 mt-12 mb-6">一場由「慈悲」結下的殊勝法緣</h4>
-            <p>在唐朝，有一位年輕的國師——玄奘法師。他為了追尋佛法的真理，發願前往遙遠的印度取經。</p>
-            <p>在準備啟程前，玄奘法師在四川成都遇到了一位生了滿身疥癩（嚴重皮膚病）的老和尚。因為病容憔悴且散發異味，旁人都不敢靠近，唯獨年輕的玄奘法師心生不忍，親自上前為老和尚清洗膿血、細心塗藥。</p>
-            <p>不久後，老和尚痊癒了。為了報答玄奘法師的悉心照料，老和尚將一部短短 260 字的經文口傳給了他，玄奘法師聽了一遍便銘記於心。</p>
-            <p>後來，玄奘法師踏上了西行之路。途中必須穿越八百里荒無人煙的沙漠，那裡「上無飛鳥，下無走獸」，四處充滿危險與邪魔鬼怪的考驗。每當遭遇危難，任何方法都無法降伏時，玄奘法師便會念起當初老和尚傳授的這部經文。說也神奇，只要經文一出，所有邪魔便會隱退，內心的恐懼也隨之消散。</p>
-            <p>就樣，玄奘法師憑藉著這部經文的功德神力，成功抵達印度，並在十五年後帶著無數經典回到中土。而當初那位滿身病痛的老和尚，正是大慈大悲的觀世音菩薩化身；這部陪伴玄奘法師度過生死難關的經文，就是我們今日熟知的《心經》。</p>
-
-            <h4 class="text-xl font-black text-[#B22222] border-l-4 border-[#B22222] pl-4 mt-12 mb-6">看透假象，找回心的本來面目</h4>
-            <p>《心經》不僅能降伏外在的魔障，更重要的是，它能降伏我們內心的煩惱。</p>
-            <p>經文中提到：「色即是空，空即是色。」 這裡的「空」，並不是什麼都沒有。觀世音菩薩是在告訴我們，宇宙間一切眾生的外在形體、環境遭遇（色），其實都是不斷變化的假象；我們真正的本性，存在於無形無相的「如來藏」之中。</p>
-            <p>當我們像菩薩一樣，不再被表面的順境、逆境所迷惑，不再被自己的感受、想法（五蘊）牽著鼻子走時，我們就能看透事物的真實樣貌。以正道（八正道）的智慧去面對生活，自然就不會有貪嗔痴的糾纏，這就是「不生不滅、不垢不淨、不增不減」的境界。</p>
-
-            <h4 class="text-xl font-black text-[#B22222] border-l-4 border-[#B22222] pl-4 mt-12 mb-6">喚醒你內在的四大菩薩</h4>
-            <p>《心經》教導我們認識自己。因為唯有認識自己，才能度化自己；唯有度化自己，才能如諸佛菩薩般去度化眾生。其實，我們每個人的心中，都蘊藏著強大的力量：</p>
-            <ul class="list-disc pl-6 space-y-2">
-              <li>心的神力，就是觀音菩薩（大悲）。</li>
-              <li>心的智力，就是大智文殊師利菩薩（大智）。</li>
-              <li>心內的法力，就是大行普賢菩薩（大行）。</li>
-              <li>心中的願力，就是地藏王菩薩（大願）。</li>
-            </ul>
-            <p>十方諸佛菩薩的心都是相通的——那是一份清淨、無畏的真心。只要我們依循《心經》的智慧去修行，就能「心無罣礙，無有恐怖」，遠離所有顛倒妄想，獲得真正的平靜與解脫。</p>
-
-            <h4 class="text-xl font-black text-[#B22222] border-l-4 border-[#B22222] pl-4 mt-12 mb-6">常誦、抄寫《心經》的無上功德</h4>
-            <p>如同淨空法師所說：「佛法，是給我們了解宇宙的真相。」</p>
-            <p>《心經》是至高無上的大神咒、大明咒，能真實不虛地除卻一切痛苦。對於現代人而言，接觸《心經》是一步步開啟智慧的過程：</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-6">
-              <div class="p-4 bg-gray-50 border-l-2 border-[#B22222]"><strong>能遇《心經》便是緣：</strong>來到廟宇，聽聞經聲，是累世修來的福報。</div>
-              <div class="p-4 bg-gray-50 border-l-2 border-[#B22222]"><strong>能見《心經》便是知：</strong>閱讀經文，開啟對宇宙人生真相的認識。</div>
-              <div class="p-4 bg-gray-50 border-l-2 border-[#B22222]"><strong>能誦《心經》便是行：</strong>口誦心惟，將佛法的智慧落實於日常念頭。</div>
-              <div class="p-4 bg-gray-50 border-l-2 border-[#B22222]"><strong>能抄《心經》便是德：</strong>靜心定神，一筆一畫皆是累積無上的功德。</div>
-              <div class="p-4 bg-gray-50 border-l-2 border-[#B22222] md:col-span-2"><strong>能得加持便是證：</strong>身心安泰，親自印證佛法帶來的平靜與喜悅。</div>
-            </div>
-
-            <div class="mt-12 p-8 bg-[#B22222]/5 border border-[#B22222]/20 text-center">
-              <p class="text-xl font-black text-[#B22222] mb-4">現在，就是最好的時刻。</p>
-              <p>修行的智慧，不是等老了、有空了才來做。現在就開始改變心態，讓《心經》成為你生命中最安定的力量吧！</p>
-            </div>
-
-            <div class="mt-12 pt-12 border-t border-gray-100 italic text-center text-gray-400">
-              「般若波羅蜜多心經」全文：<br>
-              觀自在菩薩，行深般若波羅蜜多時，照見五蘊皆空，度一切苦厄。舍利子，色不異空，空不異色，色即是空，空即是即色，受想行識，亦復如是。舍利子，是諸法空相，不生不滅，不垢不淨，不增不減。是故空中無色，無受想行識，無眼耳鼻舌身意，無色聲香味觸法，無眼界，乃至無意識界。無無明，亦無無明盡，乃至無老死，亦無老死盡。無苦集滅道，無智亦無得。以無所得故，菩提薩埵，依般若波羅蜜多故，心無罣礙，無罣礙故，無有恐怖，遠離顛倒夢想，究竟涅槃。三世諸佛，依般若波羅蜜多故，得阿耨多羅三藐三菩提。故知般若波羅蜜多，是大神咒，是大明咒，是無上咒，是無等等咒，能除一切苦，真實不虛。故說般若波羅蜜多咒，即說咒曰：揭諦揭諦，波羅揭諦，波羅僧揭諦，菩提薩婆訶。
-            </div>
-          </div>
+          <h3 class="text-2xl font-black serif-title text-[#B22222] mb-4">般若波羅蜜多心經</h3>
+          <p class="text-gray-500 mb-8 line-clamp-3 flex-grow">為何短短 260 字能流傳千古？這不僅是一部經典，更藏著一段關於玄奘法師與觀世音菩薩慈悲結緣的殊勝故事。</p>
+          <a href="./heart-sutra.html" class="inline-block bg-[#B22222] text-white px-8 py-3 font-black tracking-widest hover:bg-[#C5A009] transition-all text-center">閱讀全文</a>
         </div>
-      </section>
+      </div>
 
       <!-- 金剛經 -->
-      <section id="diamond" class="reveal">
-        <div class="title-block">
-          <h3 class="text-2xl font-black serif-title tracking-widest">金剛般若波羅蜜經</h3>
-        </div>
-        <div class="bg-white ornament-border p-8 md:p-16 shadow-sm">
-          <div class="mb-12 overflow-hidden ornament-border">
-            <img src="https://lh3.googleusercontent.com/d/1eYSPefo1t-tzD_tUlb9uAlhg_DH4mlZZ" alt="金剛經意境圖" class="w-full h-auto object-cover transition-all duration-1000">
+      <div class="reveal">
+        <div class="bg-white ornament-border p-8 shadow-sm hover:shadow-xl transition-all duration-500 group h-full flex flex-col">
+          <div class="mb-8 overflow-hidden ornament-border aspect-video">
+            <img src="https://lh3.googleusercontent.com/d/1eYSPefo1t-tzD_tUlb9uAlhg_DH4mlZZ" alt="金剛經" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
           </div>
-          <div class="sutra-content serif-title space-y-8">
-            <p class="font-bold text-xl text-[#B22222]">現代人的生活節奏很快，我們每天都在「抓取」：抓取更多的財富、追求更好的名聲、渴望更穩定的關係。但奇怪的是，當我們手裡抓的東西越多，心裡卻往往覺得越沉重、越不安。</p>
-            <p>如果你也常常感到焦慮或疲憊，或許，這部流傳千年的《金剛般若波羅蜜經》（簡稱《金剛經》），能為你帶來不一樣的解答。</p>
-            <p>《金剛經》的「金剛」二字，代表著世上最堅硬、能斬斷一切無明煩惱的智慧。它不教我們如何獲得更多，而是教我們如何「放下」。</p>
-
-            <h4 class="text-xl font-black text-[#B22222] border-l-4 border-[#B22222] pl-4 mt-12 mb-6">連「求道的心」也要放下</h4>
-            <p>佛經裡有這樣一個故事：</p>
-            <div class="p-6 bg-gray-50 italic border-r-4 border-[#B22222] text-right">
-              從前，有位修行人雙手捧著美麗的鮮花，帶著最虔誠的心來到佛陀面前，想要供養佛陀。<br>
-              佛陀看出了他的心思，便對他說：「既來求道，那就放下吧！」<br>
-              修行人聽了，恭敬地把手中的鮮花放下。<br>
-              佛陀接著說：「再放下！」<br>
-              修行人愣了一下，把空著的雙手也自然地垂下。<br>
-              沒想到，佛陀又說：「還要放下！」<br>
-              修行人這下滿臉疑惑了：「世尊！花和手，我都已經放下了，我身上什麼都沒有了，還有什麼要放下的呢？」<br>
-              佛陀看著他，溫和地說：「你心裡那個『有所求的念頭』，也要放下。」
-            </div>
-            <p>修行人聽完，當下大徹大悟。</p>
-            <p>我們常常以為，放棄了眼前的利益，去追求心靈的平靜，就是一種修行。但《金剛經》告訴我們，「應無所住而生其心」——如果我們的心一直「住」在某個目標上，即使那個目標是成佛、是平靜，它依然是一種執著。真正的清淨，是盡心盡力去做好每一件事，但內心不執著於最後的結果。</p>
-
-            <h4 class="text-xl font-black text-[#B22222] border-l-4 border-[#B22222] pl-4 mt-12 mb-6">你的心，現在在哪裡？</h4>
-            <p>唐朝有一位精通《金剛經》的德山大師，人稱「周金剛」。有一天，他挑著自己苦心鑽研寫成的註解，準備去南方與人辯論。</p>
-            <p>途中肚子餓了，他來到一家餅店想買燒餅。賣餅的老婆婆知道他是研究《金剛經》的高僧後，便笑著說：「大師，我問您一個問題，答得出來，這頓點心我免費供養您；答不出來，就請您離開。」</p>
-            <p>老婆婆問：「《金剛經》裡說：<strong>『過去心不可得，現在心不可得，未來心不可得。』</strong>請問大師，您現在肚子餓了，想點的，是哪一個『心』？」</p>
-            <p>面對這個看似家常、卻直指核心的問題，這位飽讀經書的大師竟然愣住了，一句話也答不出來，最後羞愧地離開。</p>
-            <p>這就是《金剛經》最猛烈的當頭棒喝。我們總是在為「過去」的錯誤懊悔，為「未來」的未知擔憂，甚至連「現在」這一秒，也因為思緒萬千而瞬間溜走。既然過去已經消失，未來還沒發生，現在也留不住，我們又何必為這些虛幻的念頭折磨自己呢？</p>
-
-            <h4 class="text-xl font-black text-[#B22222] border-l-4 border-[#B22222] pl-4 mt-12 mb-6">共鳴與啟發：把船留在河邊，輕裝上陣</h4>
-            <p>《金剛經》裡有一句非常著名的話：「一切有為法，如夢幻泡影，如露亦如電，應作如是觀。」</p>
-            <p>這並不是說人生沒有意義，要我們消極度日。相反地，它是在提醒我們：世間的順境與逆境、得到與失去，都像早晨的露水或天空的閃電一樣，是短暫且不斷變化的。</p>
-            <p>當我們遭遇挫折、被人誤解、或是面臨失去時，只要想起「凡所有相，皆是虛妄」，明白這一切終究會過去，我們就不會被眼前的痛苦給困住。</p>
-            <p>佛陀曾說，佛法就像是一艘用來渡河的「竹筏」。當你越過了痛苦的河流，抵達了平靜的彼岸，你應該要把這艘竹筏放下，繼續往前走，而不是把沉重的竹筏扛在肩上。</p>
-            <p>放下，不是失去一切，而是讓你的心騰出空間，去擁抱生命中真正的無限。</p>
-
-            <div class="mt-12 p-8 bg-[#B22222]/5 border border-[#B22222]/20 text-center">
-              <p class="text-xl font-black text-[#B22222] mb-4">放下心中的執念</p>
-              <p>下次當你來到廟裡，看著莊嚴的佛像時，不妨深呼吸，試著放下心中的執念。你會發現，當你不再緊緊抓取時，那份如金剛般堅不可摧的平靜，其實一直都在你的心底。</p>
-            </div>
-
-            <div class="mt-12 pt-12 border-t border-gray-100 italic text-center text-gray-400">
-              「金剛般若波羅蜜經」節錄：<br>
-              凡所有相，皆是虛妄。若見諸相非相，則見如來。<br>
-              一切有為法，如夢幻泡影，如露亦如電，應作如是觀。<br>
-              不應住色生心，不應住聲香味觸法生心，應無所住而生其心。
-            </div>
-          </div>
+          <h3 class="text-2xl font-black serif-title text-[#B22222] mb-4">金剛般若波羅蜜經</h3>
+          <p class="text-gray-500 mb-8 line-clamp-3 flex-grow">「金剛」代表能斬斷煩惱的智慧。它不教我們如何獲得更多，而是教我們如何「放下」，找回內心堅不可摧的平靜。</p>
+          <a href="./diamond-sutra.html" class="inline-block bg-[#B22222] text-white px-8 py-3 font-black tracking-widest hover:bg-[#C5A009] transition-all text-center">閱讀全文</a>
         </div>
-      </section>
-
+      </div>
     </div>
 
     <div class="mt-32 text-center">
@@ -214,7 +106,6 @@
     const handleReveal = () => {
       const reveals = document.querySelectorAll('.reveal');
       reveals.forEach(reveal => {
-        if (reveal.style.display === 'none') return;
         const windowHeight = window.innerHeight;
         const revealTop = reveal.getBoundingClientRect().top;
         if (revealTop < windowHeight - 50) {
@@ -222,38 +113,8 @@
         }
       });
     };
-
-    const filterStories = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const storyId = urlParams.get('id');
-      const sections = document.querySelectorAll('section.reveal');
-      
-      if (storyId) {
-        let found = false;
-        sections.forEach(section => {
-          if (section.id === storyId) {
-            section.style.display = 'block';
-            found = true;
-          } else {
-            section.style.display = 'none';
-          }
-        });
-        
-        // If no matching ID found, show all
-        if (!found) {
-          sections.forEach(s => s.style.display = 'block');
-        }
-      } else {
-        // No ID in URL, show all
-        sections.forEach(s => s.style.display = 'block');
-      }
-    };
-
     window.addEventListener('scroll', handleReveal);
-    window.addEventListener('load', () => {
-      filterStories();
-      handleReveal();
-    });
+    window.addEventListener('load', handleReveal);
   </script>
 </body>
 </html>
