@@ -21,6 +21,7 @@ export default defineConfig({
         about: resolve(__dirname, 'about.html'),
         gods: resolve(__dirname, 'gods.html'),
         visit: resolve(__dirname, 'visit.html'),
+        stories: resolve(__dirname, 'stories.html'),
         'heart-sutra': resolve(__dirname, 'heart-sutra.html'),
         'diamond-sutra': resolve(__dirname, 'diamond-sutra.html'),
       },

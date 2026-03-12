@@ -64,15 +64,13 @@ const STORY_PREVIEWS = [
     id: 'heart',
     title: '般若波羅蜜多心經',
     quote: '心無罣礙，無有恐怖。',
-    desc: '為何短短 260 字能流傳千古？這不僅是一部經典，更藏著一段關於玄奘法師與觀世音菩薩慈悲結緣的殊勝故事。',
-    url: './heart-sutra.html'
+    desc: '為何短短 260 字能流傳千古？這不僅是一部經典，更藏著一段關於玄奘法師與觀世音菩薩慈悲結緣的殊勝故事。'
   },
   {
     id: 'diamond',
     title: '金剛般若波羅蜜經',
     quote: '應無所住而生其心。',
-    desc: '「金剛」代表能斬斷煩惱的智慧。它不教我們如何獲得更多，而是教我們如何「放下」，找回內心堅不可摧的平靜。',
-    url: './diamond-sutra.html'
+    desc: '「金剛」代表能斬斷煩惱的智慧。它不教我們如何獲得更多，而是教我們如何「放下」，找回內心堅不可摧的平靜。'
   }
 ];
 
@@ -227,7 +225,7 @@ const App: React.FC = () => {
                       <h4 className="text-3xl md:text-5xl font-black serif-title text-[#B22222] mb-6">{story.title}</h4>
                       <p className="text-xl md:text-2xl text-[#C5A009] italic font-bold mb-8">「{story.quote}」</p>
                       <p className="text-gray-500 leading-relaxed mb-10 text-lg">{story.desc}</p>
-                      <a href={story.url} className="inline-flex items-center gap-3 bg-[#B22222] text-white px-10 py-5 font-black tracking-widest hover:bg-[#C5A009] transition-all shadow-lg">
+                      <a href={`./stories.html?id=${story.id}`} className="inline-flex items-center gap-3 bg-[#B22222] text-white px-10 py-5 font-black tracking-widest hover:bg-[#C5A009] transition-all shadow-lg">
                         閱讀全文 <ChevronRight className="w-5 h-5" />
                       </a>
                     </div>
