@@ -15,32 +15,10 @@ export const getDriveImageUrl = (id: string) => {
 // 徒步路線配置
 const ROUTE_MAP_ID = '1e2cuiEfVfpsvHCaBZ6KoU0Doj5noQh-p';
 const ROUTE_PREVIEW_URL = `https://drive.google.com/file/d/${ROUTE_MAP_ID}/preview`;
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwrvLdWiHSTvGmf-7lHdmi0JNLE18ozDtq7msjfub3ap_He3zq7F4NMkc3COB_aInC4/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwIwlcg1Ag5XarLckMHkcGuM_Z-DonfqJ6uCdbIiZ74d4FG61vrzU95dSaSAidzKMMr/exec'; 
 const LINE_CONTACT_URL = 'https://lin.ee/VqVsX38';
 
 const LATEST_NEWS = [
-  {
-    id: 'news3',
-    title: '丙午年徒步環島',
-    desc: '第三次徒步環島，一步一腳印，皆是懺悔，也是祈禱。跟隨聖母腳步巡禮全台，體悟修行不只在殿堂之上，更在腳下的每一寸土地。',
-    deadline: '年度盛事', 
-    type: '最新活動',
-    actions: [
-      { label: 'LINE 諮詢', link: 'https://lin.ee/22Yqo9fe', type: 'primary', icon: 'message' },
-      { label: '徒步路線', type: 'secondary', icon: 'map', isRouteTrigger: true }
-    ]
-  },
-  {
-    id: 'news1',
-    title: '龍柱祈福燈',
-    desc: '燃燈供佛，龍天護佑。點亮整年元神光明，祈求闔家平安順遂。',
-    deadline: '115/2/20',
-    type: '點燈報名',
-    items: ['龍柱燈'],
-    actions: [
-      { label: '線上報名', type: 'primary', icon: 'form', isFormTrigger: true }
-    ]
-  },
   {
     id: 'news2',
     title: '聖母聖示 ‧ 線上問事',
@@ -78,6 +56,21 @@ const DIVINE_STATUES = [
     imgId: '1-8qfVQXgkSNi__jJFddNPEtWinNaGgAP',
     quote: '驅邪鎮宅，守護財庫',
     description: '鎮守神龕之下，具備強大的驅邪與咬錢招財之力。護佑孩童平安長大，避開小人是非。'
+  }
+];
+
+const STORY_PREVIEWS = [
+  {
+    id: 'heart',
+    title: '般若波羅蜜多心經',
+    quote: '心無罣礙，無有恐怖。',
+    desc: '為何短短 260 字能流傳千古？這不僅是一部經典，更藏著一段關於玄奘法師與觀世音菩薩慈悲結緣的殊勝故事。'
+  },
+  {
+    id: 'diamond',
+    title: '金剛般若波羅蜜經',
+    quote: '應無所住而生其心。',
+    desc: '「金剛」代表能斬斷煩惱的智慧。它不教我們如何獲得更多，而是教我們如何「放下」，找回內心堅不可摧的平靜。'
   }
 ];
 
@@ -215,16 +208,28 @@ const App: React.FC = () => {
             <section className="relative z-40 px-4 pt-24 md:pt-40 bg-white">
               <div className="container mx-auto max-w-6xl">
                 <SectionTitle className="mb-12">最新消息</SectionTitle>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-                  <div className="md:col-span-2">
+                <div className="flex justify-center">
+                  <div className="w-full max-w-3xl">
                     <NewsCard news={LATEST_NEWS[0]} isMain={true} />
                   </div>
-                  <div className="md:col-span-1">
-                    <NewsCard news={LATEST_NEWS[1]} />
-                  </div>
-                  <div className="md:col-span-1">
-                    <NewsCard news={LATEST_NEWS[2]} />
-                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="py-24 md:py-40 bg-white">
+              <div className="container mx-auto px-4 max-w-6xl">
+                <SectionTitle>故事篇</SectionTitle>
+                <div className="grid grid-cols-1 gap-8">
+                  {STORY_PREVIEWS.map((story, idx) => (
+                    <div key={idx} className="bg-white ornament-border p-8 md:p-16 shadow-xl border-l-4 border-[#B22222] group hover:-translate-y-1 transition-all duration-500">
+                      <h4 className="text-3xl md:text-5xl font-black serif-title text-[#B22222] mb-6">{story.title}</h4>
+                      <p className="text-xl md:text-2xl text-[#C5A009] italic font-bold mb-8">「{story.quote}」</p>
+                      <p className="text-gray-500 leading-relaxed mb-10 text-lg">{story.desc}</p>
+                      <a href={`./stories.html?id=${story.id}`} className="inline-flex items-center gap-3 bg-[#B22222] text-white px-10 py-5 font-black tracking-widest hover:bg-[#C5A009] transition-all shadow-lg">
+                        閱讀全文 <ChevronRight className="w-5 h-5" />
+                      </a>
+                    </div>
+                  ))}
                 </div>
               </div>
             </section>

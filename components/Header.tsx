@@ -23,11 +23,12 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
   const navLinks = [
     { name: '宮廟沿革', action: onIntroClick },
     { name: '祀奉神尊', action: onGodsClick },
+    { name: '故事篇', href: './stories.html' },
     { name: '朝聖資訊', action: onPilgrimageClick },
   ];
 
-  const handleNavClick = (action: () => void) => {
-    action();
+  const handleNavClick = (action?: () => void) => {
+    if (action) action();
     setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -50,10 +51,17 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
         {/* Desktop Nav - Left */}
         <nav className="hidden lg:flex items-center space-x-12 text-[15px] font-black tracking-[0.3em] uppercase text-[#333333]">
           {navLinks.slice(0, 2).map((link) => (
-            <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#B22222] transition-colors relative group">
-              {link.name}
-              <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
-            </button>
+            link.href ? (
+              <a key={link.name} href={link.href} className="hover:text-[#B22222] transition-colors relative group">
+                {link.name}
+                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
+              </a>
+            ) : (
+              <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#B22222] transition-colors relative group">
+                {link.name}
+                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
+              </button>
+            )
           ))}
         </nav>
 
@@ -70,13 +78,20 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
         </button>
 
         {/* Desktop Nav - Right */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-8">
           <nav className="hidden lg:flex items-center text-[15px] font-black tracking-[0.3em] uppercase text-[#333333]">
             {navLinks.slice(2).map((link) => (
-              <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#B22222] transition-colors relative group">
-                {link.name}
-                <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
-              </button>
+              link.href ? (
+                <a key={link.name} href={link.href} className="hover:text-[#B22222] transition-colors relative group px-6">
+                  {link.name}
+                  <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
+                </a>
+              ) : (
+                <button key={link.name} onClick={() => handleNavClick(link.action)} className="hover:text-[#B22222] transition-colors relative group px-6">
+                  {link.name}
+                  <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-[#B22222] transition-all group-hover:w-full"></span>
+                </button>
+              )
             ))}
           </nav>
           <div className="w-10 lg:hidden"></div>
@@ -88,13 +103,23 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
         <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 h-screen shadow-2xl animate-in fade-in slide-in-from-top duration-300">
           <nav className="flex flex-col p-12 space-y-4 text-center">
             {navLinks.map((link) => (
-              <button 
-                key={link.name} 
-                onClick={() => handleNavClick(link.action)}
-                className="py-6 border-b border-gray-50 text-[#B22222] font-black text-2xl tracking-[0.4em] uppercase active:text-[#C5A009]"
-              >
-                {link.name}
-              </button>
+              link.href ? (
+                <a 
+                  key={link.name} 
+                  href={link.href}
+                  className="py-6 border-b border-gray-50 text-[#B22222] font-black text-2xl tracking-[0.4em] uppercase active:text-[#C5A009]"
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <button 
+                  key={link.name} 
+                  onClick={() => handleNavClick(link.action)}
+                  className="py-6 border-b border-gray-50 text-[#B22222] font-black text-2xl tracking-[0.4em] uppercase active:text-[#C5A009]"
+                >
+                  {link.name}
+                </button>
+              )
             ))}
             <div className="pt-16 flex flex-col items-center gap-6">
               <img src={LOGO_URL} alt="南海慈寧宮 LOGO" className="w-16 h-16 object-contain" />
@@ -108,3 +133,4 @@ const Header: React.FC<HeaderProps> = ({ onHomeClick, onIntroClick, onGodsClick,
 };
 
 export default Header;
+

@@ -6,6 +6,7 @@
 // 試算表 ID 配置
 const LIGHTING_SHEET_ID = '1ji7dhR6UqK1Xatpiu-fRuLEc67NP6gR_0cQvFr1wMac';
 const INQUIRY_SHEET_ID = '1pbB2kXGjWt9PU8kbW0qiNDnkQ4bpIFK45fKjZOgc87A';
+const PRODUCT_SHEET_ID = '1AxzphT6sT3CYTwFDlhFftfZhLJh_OCfjCmxfF9I918U'; // 商品清單試算表 ID
 
 /**
  * 處理 POST 請求
@@ -22,6 +23,56 @@ function doPost(e) {
     return createJsonResponse({ error: '未知的 Action: ' + action });
   } catch (err) {
     return createJsonResponse({ error: '系統錯誤', details: err.toString() });
+  }
+}
+
+/**
+ * 處理 GET 請求
+ */
+function doGet(e) {
+  const action = e.parameter.action;
+  
+  if (action === 'getProducts') {
+    return getProducts();
+  }
+  
+  return ContentService.createTextOutput("南海慈寧宮後端 API 運作中。").setMimeType(ContentService.MimeType.TEXT);
+}
+
+/**
+ * 獲取商品清單
+ */
+function getProducts() {
+  try {
+    const ss = SpreadsheetApp.openById(PRODUCT_SHEET_ID);
+    const sheet = ss.getSheetByName('商品清單');
+    
+    if (!sheet) {
+      return createJsonResponse({ error: '找不到「商品清單」工作表' });
+    }
+
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) return createJsonResponse([]);
+
+    const headers = data[0].map(h => h.toString().trim());
+    const rows = data.slice(1);
+
+    const products = rows.map(row => {
+      const obj = {};
+      headers.forEach((header, index) => {
+        let value = row[index];
+        // 處理數值欄位
+        if (['price', 'original_price', 'stock'].includes(header)) {
+          value = parseFloat(value) || 0;
+        }
+        obj[header] = value;
+      });
+      return obj;
+    }).filter(p => p.status === 'Active');
+
+    return createJsonResponse(products);
+  } catch (err) {
+    return createJsonResponse({ error: '獲取商品失敗', details: err.toString() });
   }
 }
 
@@ -50,7 +101,6 @@ function handleCustomFormSubmission(data) {
     // 準備新行資料
     let newRowData;
     if (isLighting) {
-      // 龍柱祈福燈欄位：姓名、電話、性別、項目(龍柱燈)、其他說明
       newRowData = [
         data.timestamp || new Date().toLocaleString('zh-TW', { hour12: false }),
         data.name || '',
@@ -60,7 +110,6 @@ function handleCustomFormSubmission(data) {
         data.reason || ''
       ];
     } else {
-      // 線上問事欄位：姓名、電話、生日、性別、地址、項目、其他說明
       newRowData = [
         data.timestamp || new Date().toLocaleString('zh-TW', { hour12: false }),
         data.name || '',
@@ -83,11 +132,4 @@ function handleCustomFormSubmission(data) {
 function createJsonResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
-}
-
-/**
- * 處理 GET 請求 (可用於簡單測試)
- */
-function doGet(e) {
-  return ContentService.createTextOutput("南海慈寧宮後端 API 運作中。").setMimeType(ContentService.MimeType.TEXT);
 }
